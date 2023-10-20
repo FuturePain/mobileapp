@@ -14,6 +14,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen
           name="FUTUREPAIN"
           component={HomeScreen}
@@ -22,7 +23,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Lesson" component={Content} />
-        <Stack.Screen name="Login" component={Login} />
+        
         <Stack.Screen
           name="Quiz"
           component={Quiz}

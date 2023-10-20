@@ -6,7 +6,7 @@ export default function Content({ navigation }) {
     <View style={styles.container}>
       <Text style={{ fontSize: 25, padding: 20 }}>Lesson #1: </Text>
       <Text>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sit
+        Lorem dolor sit amet, consectetur adipiscing elit. Praesent sit
         amet turpis massa. Ut eu vulputate ante, a faucibus leo. Fusce blandit
         nisl metus, sit amet maximus dolor sagittis vitae. Quisque convallis non
         lacus sed bibendum. Praesent pharetra in sapien sed malesuada. Ut vitae
