@@ -3,6 +3,7 @@ import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Collapsible from 'react-native-collapsible';
+import { useRoute } from '@react-navigation/native';
 
 export default function HomeScreen({ navigation }) {
   const [collapsibleOpen, setCollapsibleOpen] = useState(true);
@@ -13,11 +14,16 @@ export default function HomeScreen({ navigation }) {
     { title: "Open lesson page (debug)", action: () => navigation.navigate("Lesson") },
   ];
 
+  const route = useRoute();
+  const userData = route.params?.userData;
+
+  console.log(userData);
+
   return (
     <View style={styles.container}>
 
       <Text style={styles.hiName}>
-        Hello David, {"\n"}Please complete the marked modules
+        Hello {userData[userData.length -2]}, {"\n"}Your text is: {userData[userData.length -1]}
       </Text>
 
       <TouchableOpacity 
@@ -72,10 +78,9 @@ const styles = StyleSheet.create({
   hiName: {
     padding: 5,
     paddingLeft: 10,
-    fontSize: 20,
+    fontSize: 15,
     fontWeight: 'bold',
     color: "#555",
-    lineHeight: 40,
   },
   cardButton: {
     flexDirection: 'row',
