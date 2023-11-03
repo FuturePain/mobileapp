@@ -1,41 +1,203 @@
 import { StatusBar } from "expo-status-bar";
-import { Button, StyleSheet, Text, View } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+} from "react-native";
+import pages, { parseNewElement, parseBold, images } from "./ContentBody";
+import { useEffect } from "react";
 
-export default function Content({ navigation }) {
+export default function Content({ navigation, pageNumber = 1 }) {
+  const pageContent = pages[pageNumber - 1];
   return (
-    <View style={styles.container}>
-      <Text style={{ fontSize: 25, padding: 20 }}>Lesson #1: </Text>
-      <Text>
-        Lorem dolor sit amet, consectetur adipiscing elit. Praesent sit
-        amet turpis massa. Ut eu vulputate ante, a faucibus leo. Fusce blandit
-        nisl metus, sit amet maximus dolor sagittis vitae. Quisque convallis non
-        lacus sed bibendum. Praesent pharetra in sapien sed malesuada. Ut vitae
-        magna varius, aliquam orci a, blandit sapien. Morbi elementum felis
-        facilisis nisl auctor, a blandit dolor lobortis. Proin nec commodo arcu,
-        quis cursus augue. Donec eget tellus id risus vestibulum semper nec nec
-        lectus. Cras mattis odio quam. Nunc fermentum libero urna, eu elementum
-        augue semper sed. Vestibulum a massa in nibh sollicitudin porttitor.
-      </Text>
-      <Text style={{ paddingTop: 20, fontWeight: "bold" }}>
-        Ready to take a quiz to check your comprehension?
-      </Text>
-      <Button
-        title="Open quiz"
-        onPress={() => {
-          navigation.navigate("Quiz");
+    <ScrollView contentContainerStyle={styles.container}>
+      <Text
+        style={{
+          fontSize: 40,
+          paddingTop: 15,
+          paddingBottom: 15,
+          fontWeight: "800",
         }}
-      />
+      >
+        {pageContent.pageTitle}
+      </Text>
+      {pageContent.listOfBody.map((element) => {
+        switch (element.type) {
+          case "heading": {
+            return (
+              <Text
+                key={element.content}
+                style={{ fontSize: 30, fontWeight: "700", padding: 10 }}
+              >
+                {element.content}
+              </Text>
+            );
+          }
+          case "subheading": {
+            return (
+              <Text
+                key={element.content}
+                style={{ fontSize: 25, fontWeight: "500", padding: 10 }}
+              >
+                {element.content}
+              </Text>
+            );
+          }
+          case "body": {
+            const arrToReturn = [],
+              elements = parseNewElement(element.content);
+            elements.forEach((element) => {
+              const boldSeparation = parseBold(element);
+              boldSeparation.forEach((text) => {
+                if (text[0] == "#") {
+                  // bold text
+                  arrToReturn.push(
+                    <Text
+                      style={{ fontSize: 17, fontWeight: "bold", padding: 6 }}
+                    >
+                      {" " + text.substring(1) + " "}
+                    </Text>
+                  );
+                } else {
+                  arrToReturn.push(
+                    <Text style={{ fontSize: 17 }}>{text}</Text>
+                  );
+                }
+              });
+              arrToReturn.push(<Text>{"\n"}</Text>);
+            });
+            return (
+              <Text style={{ lineHeight: 32, padding: 6 }}>{arrToReturn}</Text>
+            );
+          }
+          case "image": {
+            return (
+              // <></>
+              <Image
+                key={element.content}
+                style={{
+                  resizeMode: "contain",
+                  width: "100%",
+                  height: 350,
+                }}
+                source={images[element.content]}
+              />
+            );
+          }
+          case "bullet": {
+            const arrToReturn = [],
+              elements = parseNewElement(element.content);
+            elements.forEach((element) => {
+              const boldSeparation = parseBold(element);
+              arrToReturn.push(
+                <Text style={{ fontSize: 25 }}>
+                  {"\u29bf"}
+                  {"  "}
+                </Text>
+              );
+              boldSeparation.forEach((text) => {
+                if (text[0] == "#") {
+                  // bold text
+                  arrToReturn.push(
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" " + text.substring(1) + " "}
+                    </Text>
+                  );
+                } else {
+                  arrToReturn.push(
+                    <Text style={{ fontSize: 20 }}>{text}</Text>
+                  );
+                }
+              });
+              arrToReturn.push(<Text>{"\n"}</Text>);
+            });
+            return (
+              <Text
+                style={{
+                  lineHeight: 32,
+                  padding: 6,
+                  justifyContent: "center",
+                }}
+              >
+                {arrToReturn}
+              </Text>
+            );
+          }
+          case "bulletalert": {
+            const arrToReturn = [],
+              elements = parseNewElement(element.content);
+            elements.forEach((element) => {
+              const boldSeparation = parseBold(element);
+              arrToReturn.push(
+                <Text style={{ fontSize: 18 }}>
+                  {"        \u29be"}
+                  {"  "}
+                </Text>
+              );
+              boldSeparation.forEach((text) => {
+                if (text[0] == "#") {
+                  // bold text
+                  arrToReturn.push(
+                    <Text
+                      style={{
+                        fontSize: 18,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      {" " + text.substring(1) + " "}
+                    </Text>
+                  );
+                } else {
+                  arrToReturn.push(
+                    <Text style={{ fontSize: 18 }}>{text}</Text>
+                  );
+                }
+              });
+              arrToReturn.push(<Text>{"\n"}</Text>);
+            });
+            return (
+              <Text
+                style={{
+                  lineHeight: 32,
+                  padding: 6,
+                  justifyContent: "center",
+                }}
+              >
+                {arrToReturn}
+              </Text>
+            );
+          }
+        }
+      })}
+      <View style={{ justifyContent: "center", width: "100%" }}>
+        <Button
+          title="Open quiz"
+          style={{ fontWeight: "bold" }}
+          onPress={() => {
+            navigation.navigate("Quiz");
+          }}
+        />
+      </View>
       <StatusBar style="auto" />
-    </View>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
-    alignItems: "center",
+    alignItems: "left",
     justifyContent: "center",
-    padding: 30,
+    paddingBottom: 40,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
 });

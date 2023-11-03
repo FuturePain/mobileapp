@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, LogBox } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -11,6 +11,8 @@ import Quiz from "./components/Quiz";
 const Stack = createNativeStackNavigator();
 
 export default function App() {
+  LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
+  LogBox.ignoreAllLogs(); //Ignore all log notifications
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -23,7 +25,7 @@ export default function App() {
           }}
         />
         <Stack.Screen name="Lesson" component={Content} />
-        
+
         <Stack.Screen
           name="Quiz"
           component={Quiz}
