@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, Linking} from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, Linking, KeyboardAvoidingView} from "react-native";
 import { Input, Button } from 'react-native-elements';
 
 
@@ -92,12 +92,19 @@ export default function Login({ navigation }) {
     setInputValue(text);
   };
   return (
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior='position' 
+    keyboardVerticalOffset='-30'>
+
     <View style={styles.container}>
+
       <Image
         source={require('../assets/screenHeader.png')}
         style={styles.imageHeader}
       />
       <Text style={styles.headerText}>Login</Text>
+
       <Input
         placeholder='Email ID'
         value={emailValue}
@@ -163,7 +170,13 @@ export default function Login({ navigation }) {
         }}>
         <Text style={styles.registerText}>Register for the study here</Text>
       </TouchableOpacity>
+
+      
+      
     </View>
+
+    </KeyboardAvoidingView>
+    
   );
 }
 
@@ -172,13 +185,14 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#F4F6F8",
     alignItems: "center",
-    paddingTop: 50,
+    paddingTop: 25,
   },
   imageHeader: {
     width: '70%',
     height: 290,
     padding:5,
     marginBottom:20,
+    marginTop:20,
   },
   headerText: {
     fontSize: 25,
@@ -192,7 +206,9 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingLeft: 15,
     marginBottom:5,
+    width: "130%",
     backgroundColor: "#FFF",
+    alignSelf: "center",
   },
   loginButton: {
     backgroundColor: "#7f82e1",
