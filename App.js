@@ -7,6 +7,7 @@ import HomeScreen from "./components/HomeScreen";
 import Content from "./components/Content";
 import Login from "./components/Login";
 import Quiz from "./components/Quiz";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Stack = createNativeStackNavigator();
 
@@ -16,7 +17,11 @@ export default function App() {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
+        />
         <Stack.Screen
           name="FUTUREPAIN"
           component={HomeScreen}
@@ -24,13 +29,18 @@ export default function App() {
             headerLargeTitle: true,
           }}
         />
-        <Stack.Screen name="Lesson" component={Content} />
+        <Stack.Screen
+          name="Lesson"
+          component={Content}
+          options={{ headerShown: false, gestureEnabled: false }}
+        />
 
         <Stack.Screen
           name="Quiz"
           component={Quiz}
           options={{
-            headerLargeTitle: true,
+            headerShown: false,
+            gestureEnabled: false,
           }}
         />
       </Stack.Navigator>
