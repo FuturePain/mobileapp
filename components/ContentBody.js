@@ -20,10 +20,10 @@ export const parseBold = (content) => {
 };
 
 export const images = {
-  "1-1.png": require("../../course-assets/1-1.png"),
-  "1-2.png": require("../../course-assets/1-2.png"),
-  "1-3.png": require("../../course-assets/1-3.png"),
-  "1-4.png": require("../../course-assets/1-4.png"),
+  "1-1.png": require("../course-assets/1-1.png"),
+  "1-2.png": require("../course-assets/1-2.png"),
+  "1-3.png": require("../course-assets/1-3.png"),
+  "1-4.png": require("../course-assets/1-4.png"),
 };
 
 const page1 = contentBody([
