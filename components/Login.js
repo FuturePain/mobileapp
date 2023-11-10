@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, Linking, KeyboardAvoidingView} from "react-native";
 import { Input, Button } from 'react-native-elements';
 
@@ -78,7 +78,6 @@ function getValuesArrayByEmail(jsonResponse, email) {
 
 // Main function to run the export process
 async function exportSurveyResponses() {
-
   const progressId = await createExport(surveyId);
   const fileId = await checkExportProgress(progressId);
   const downloadedData = await downloadResponses(fileId);
@@ -87,10 +86,19 @@ async function exportSurveyResponses() {
 }
 
 export default function Login({ navigation }) {
+  let downloadedData;
   const [emailValue, setInputValue] = useState('');
   const handleInputChange = (text) => {
     setInputValue(text);
   };
+  const onScreenLoad = async () => {
+    downloadedData = await exportSurveyResponses();
+  }
+  useEffect(() => {
+    onScreenLoad();
+
+}, [])
+
   return (
     <KeyboardAvoidingView
     style={styles.container}
@@ -133,9 +141,11 @@ export default function Login({ navigation }) {
       <Button
         title="Login"
         buttonStyle={styles.loginButton}
-        onPress={async () => {
-          const downloadedData = await exportSurveyResponses();
+        onPress={async () => { 
 
+          if(downloadedData == undefined){
+            downloadedData = await exportSurveyResponses();
+          }
           //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
           const emailAddresses = downloadedData.responses.map(response => response.values.QID1_TEXT);
           const email = emailValue.toLowerCase().trim();
