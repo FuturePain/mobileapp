@@ -8,7 +8,11 @@ import {
   ScrollView,
   Animated,
 } from "react-native";
-import pages, { parseNewElement, parseBold, images } from "./ContentBody";
+import pages, {
+  parseNewElement,
+  parseBold,
+  images,
+} from "./frameworks/ContentBody";
 import { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DynamicHeader from "./DynamicHeader";
@@ -23,8 +27,9 @@ const scrollPercentage = ({
   );
 };
 
-export default function Content({ navigation, pageNumber = 1 }) {
+export default function Content({ route, navigation, pageNumber = 1 }) {
   const pageContent = pages[pageNumber - 1];
+  if (!pageNumber) pageContent = pages[route.params.pageNumber - 1];
   let wordCount = pageContent.pageTitle.split(" ").length;
   for (let i = 0; i < pageContent.listOfBody.length; i++) {
     wordCount += pageContent.listOfBody[i].content.split(" ").length;
