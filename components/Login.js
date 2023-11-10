@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, Linking, KeyboardAvoidingView} from "react-native";
 import { Input, Button } from 'react-native-elements';
 
@@ -89,6 +89,7 @@ function getValuesArrayByEmail(jsonResponse, email) {
 
 // Main function to run the export process
 async function exportSurveyResponses() {
+
   const progressId = await createExport(surveyId);
   const fileId = await checkExportProgress(progressId);
   const downloadedData = await downloadResponses(fileId);
@@ -97,60 +98,61 @@ async function exportSurveyResponses() {
 }
 
 export default function Login({ navigation }) {
-  const [emailValue, setInputValue] = useState("");
+  let downloadedData;
+  const [emailValue, setInputValue] = useState('');
   const handleInputChange = (text) => {
     setInputValue(text);
   };
-  const onScreenLoad = async () => {
-    downloadedData = await exportSurveyResponses();
-  }
-  useEffect(() => {
-    onScreenLoad();
-
-}, [])
-
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="padding">
-      <ScrollView
-        scrollEnabled={false}
-        contentContainerStyle={styles.container}
-        keyboardShouldPersistTaps={"never"}
-      >
-        <Image
-          source={require("../assets/screenHeader.png")}
-          style={styles.imageHeader}
-        />
-        <Text style={styles.headerText}>
-          Login to <Text style={{ color: "#7f82e1" }}>FUTUREPAIN</Text>
-        </Text>
-        <InteractiveTextInput
-          autoCapitalize="false"
-          autoComplete="false"
-          autoCorrect="false"
-          autoFocus
-          placeholder="Email address"
-          value={emailValue}
-          onChangeText={handleInputChange}
-        />
-        <View style={{ height: 15, width: "100%" }} />
-        {/* <InteractiveTextInput placeholder="Password" secureTextEntry={true} /> */}
-        <View style={{ height: 15, width: "100%" }} />
-        <AppButton
-          disabled={
-            !String(emailValue)
-              .toLowerCase()
-              .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-              )
-          }
-          onPress={async () => {
-            const downloadedData = await exportSurveyResponses();
+    <KeyboardAvoidingView
+    style={styles.container}
+    behavior='position' 
+    keyboardVerticalOffset='-30'>
 
-            //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
-            const emailAddresses = downloadedData.responses.map(
-              (response) => response.values.QID1_TEXT
-            );
-            const email = emailValue.toLowerCase().trim();
+    <View style={styles.container}>
+
+      <Image
+        source={require('../assets/screenHeader.png')}
+        style={styles.imageHeader}
+      />
+      <Text style={styles.headerText}>Login</Text>
+
+      <Input
+        placeholder='Email ID'
+        value={emailValue}
+        onChangeText={handleInputChange}
+        inputContainerStyle={styles.inputField}
+        leftIcon={
+          <MaterialIcons
+            name='email'
+            size={24}
+            color='#7B7B7B'
+          />
+        }
+      />
+      <Input
+        placeholder='Password'
+        secureTextEntry={true}
+        inputContainerStyle={styles.inputField}
+        leftIcon={
+          <Ionicons
+            name='lock-closed'
+            size={24}
+            color='#7B7B7B'
+          />
+        }
+      />
+      <Button
+        title="Login"
+        buttonStyle={styles.loginButton}
+        onPress={async () => { 
+
+          if(downloadedData == undefined){
+            downloadedData = await exportSurveyResponses();
+          }
+          //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
+          const emailAddresses = downloadedData.responses.map(response => response.values.QID1_TEXT);
+          const email = emailValue.toLowerCase().trim();
 
             if (emailAddresses.includes(email)) {
               const userData = getValuesArrayByEmail(downloadedData, email);
