@@ -141,7 +141,7 @@ export default function Login({ navigation }) {
           }
           //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
           const emailAddresses = downloadedData.responses.map(response => response.values.QID1_TEXT);
-          const email = emailValue.toLowerCase().trim();
+          const email = emailValue.toLowerCase().trim(); 
 
           console.log(emailAddresses);
           console.log(email);
