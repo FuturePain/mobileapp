@@ -8,21 +8,37 @@ import Content from "./components/Content";
 import Login from "./components/Login";
 import Quiz from "./components/Quiz";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { useEffect, useState } from "react";
+import * as SecureStore from "expo-secure-store";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
   LogBox.ignoreAllLogs(); //Ignore all log notifications
+  const [isSignedIn, setSignedStatus] = useState(false);
+  async function fetch() {
+    userData = await SecureStore.getItemAsync("userData");
+    if (userData) {
+      setSignedStatus(true);
+    }
+  }
+  useEffect(() => {
+    fetch();
+  }, []);
   return (
     <SafeAreaProvider>
       <NavigationContainer>
         <Stack.Navigator>
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
+          {!isSignedIn ? (
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+          ) : (
+            <></>
+          )}
           <Stack.Screen
             name="FUTUREPAIN"
             component={HomeScreen}
@@ -39,6 +55,7 @@ export default function App() {
             name="Quiz"
             component={Quiz}
             options={{
+              headerBackVisible: false,
               headerLargeTitle: true,
               gestureEnabled: false,
               headerShadowVisible: false,

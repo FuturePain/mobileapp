@@ -13,6 +13,7 @@ import {
 } from "react-native";
 import AppButton from "./AppButton";
 import InteractiveTextInput from "react-native-text-input-interactive";
+import * as SecureStore from "expo-secure-store";
 
 //replace with Brown's values
 const qualtricsDomain = "yul1.qualtrics.com";
@@ -123,10 +124,9 @@ export default function Login({ navigation }) {
           Login to <Text style={{ color: "#7f82e1" }}>FUTUREPAIN</Text>
         </Text>
         <InteractiveTextInput
-          autoCapitalize="false"
-          autoComplete="false"
-          autoCorrect="false"
-          autoFocus
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
           placeholder="Email address"
           value={emailValue}
           onChangeText={handleInputChange}
@@ -155,6 +155,11 @@ export default function Login({ navigation }) {
               const userData = getValuesArrayByEmail(downloadedData, email);
 
               navigation.replace("FUTUREPAIN", { userData: userData });
+              await SecureStore.setItemAsync(
+                "userData",
+                JSON.stringify(userData)
+              );
+              console.log(await SecureStore.getItemAsync("userData"));
             } else {
               Alert.alert(
                 "Username not found",

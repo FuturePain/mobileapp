@@ -164,9 +164,10 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                           currentQuestion ==
                           pageContent.quizQuestions.length - 1
                         ) {
-                          navigation.navigate("Lesson", {
-                            pageNumber: 1,
-                          });
+                          // navigation.navigate("Lesson", {
+                          //   pageNumber: 1,
+                          // });
+                          navigation.navigate("FUTUREPAIN");
                         } else {
                           setCurrentQuestion(currentQuestion + 1);
                           setUserAnswers([]);
@@ -176,7 +177,10 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                   ]
                 );
               } else {
-                Alert.alert("Close!", "You're close! Try again.");
+                Alert.alert(
+                  "Close!",
+                  pageContent.quizFeedbacks[currentQuestion]
+                );
               }
             }}
           />

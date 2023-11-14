@@ -4,6 +4,7 @@ const quizBody = (items) => {
     "quizDescription",
     "quizQuestions",
     "quizChoices",
+    "quizFeedbacks",
     "quizAnswers",
   ];
   // quizChoices is an array of arrays
@@ -40,6 +41,10 @@ const quiz1 = quizBody([
   [
     ["True", "False"],
     ["True", "False"],
+  ],
+  [
+    "Remember, pain is partly an emotional experience as well!",
+    "Pain can occur because of stress related emotions.",
   ],
   [[1], [0]],
 ]);

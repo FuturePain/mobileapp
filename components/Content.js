@@ -58,7 +58,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
         />
         <ScrollView
           contentContainerStyle={styles.container}
-          scrollEventThrottle={16}
+          scrollEventThrottle={10}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
             { listener: (event) => handleScroll(event), useNativeDriver: false }
@@ -233,10 +233,22 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
               }
             }
           })}
-          <View style={{ justifyContent: "center", width: "100%" }}>
+          <View
+            style={{
+              justifyContent: "center",
+              width: "100%",
+              flexDirection: "row",
+              gap: "50%",
+            }}
+          >
             <Button
-              title="Open quiz"
-              style={{ fontWeight: "bold" }}
+              title="← Take a break"
+              onPress={() => {
+                navigation.navigate("FUTUREPAIN");
+              }}
+            />
+            <Button
+              title="Take the quiz →"
               onPress={() => {
                 navigation.navigate("Quiz");
               }}
@@ -254,7 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: "left",
     justifyContent: "center",
-    paddingBottom: 80,
+    paddingBottom: 100,
     paddingLeft: 10,
     paddingRight: 10,
   },

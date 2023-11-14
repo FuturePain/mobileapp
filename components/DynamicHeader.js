@@ -2,8 +2,8 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Text, View, Animated, StyleSheet } from "react-native";
 
-const Header_Max_Height = 80;
-const Header_Min_Height = 60;
+const Header_Max_Height = 150;
+const Header_Min_Height = 100;
 const Scroll_Distance = Header_Max_Height - Header_Min_Height;
 
 const DynamicHeader = ({
@@ -72,6 +72,21 @@ const DynamicHeader = ({
         )}{" "}
         minutes left to complete
       </Text>
+      {valueOfHeight < Header_Max_Height ? (
+        <Text
+          style={{
+            color: "white",
+            fontWeight: 700,
+            padding: 3,
+            fontSize: 20,
+            textAlign: "center",
+          }}
+        >
+          Welcome to your lesson!
+        </Text>
+      ) : (
+        <></>
+      )}
     </Animated.View>
   );
 };
