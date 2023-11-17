@@ -196,6 +196,7 @@ const styles = StyleSheet.create({
     alignItems: "left",
     justifyContent: "flex-start",
     padding: 20,
+    paddingTop: 0,
   },
   buttonTop: {
     alignItems: "center",

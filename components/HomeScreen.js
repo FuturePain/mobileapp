@@ -6,11 +6,17 @@ import {
   View,
   TouchableOpacity,
   FlatList,
+  ScrollView,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
 import { useRoute } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
+import { SafeAreaView } from "react-native-safe-area-context";
+import pages from "./frameworks/ContentBody";
+import quizzes from "./frameworks/QuizBody";
+import AppCard from "./AppCard";
+import AppButton from "./AppButton";
 
 export default function HomeScreen({ navigation }) {
   const [collapsibleOpen, setCollapsibleOpen] = useState(true);
@@ -49,44 +55,53 @@ export default function HomeScreen({ navigation }) {
   return (
     <>
       {userData ? (
-        <View style={styles.container}>
-          <Text style={styles.hiName}>
-            Hello {userData[userData.length - 2]}, {"\n"}Your text is:{" "}
-            {userData[userData.length - 1]}
-          </Text>
-
-          <TouchableOpacity
-            style={styles.collapsibleHeader}
-            onPress={() => setCollapsibleOpen(!collapsibleOpen)}
+        <SafeAreaView style={{ backgroundColor: "white", minHeight: "100%" }}>
+          <ScrollView
+            contentContainerStyle={styles.container}
+            contentInsetAdjustmentBehavior="automatic"
           >
-            <Text style={styles.headerText}>Module #1</Text>
-            <MaterialCommunityIcons
-              name={collapsibleOpen ? "arrow-up" : "arrow-down"}
-              size={24}
-              color="#555"
+            <Text style={styles.hiName}>
+              Welcome back{" "}
+              <Text style={{ fontWeight: "700" }}>
+                {userData[userData.length - 2]}
+              </Text>
+              !{" "}
+            </Text>
+            <View style={{ alignItems: "center", width: "100%" }}>
+              <Text style={[styles.hiText, { fontSize: 30 }]}>
+                Your progress in the study:
+              </Text>
+              <Text style={styles.hiText}>
+                1 / {pages.length + quizzes.length} modules completed
+              </Text>
+              <AppCard title="Lesson 1: Mind Body Syndrome" completed />
+              <AppCard title="Quiz 1: What is Pain?" />
+
+              <Text style={styles.hiText}>
+                Study closes on{" "}
+                <Text style={{ textDecorationLine: "underline" }}>
+                  Month Day, Year
+                </Text>
+              </Text>
+            </View>
+            <StatusBar style="auto" />
+          </ScrollView>
+          <View
+            style={{
+              justifyContent: "center",
+              width: "100%",
+              marginTop: 15,
+              alignItems: "center",
+            }}
+          >
+            <AppButton
+              title="Begin next module: Quiz 1"
+              onPress={() => {
+                navigation.navigate("Quiz");
+              }}
             />
-          </TouchableOpacity>
-          <Collapsible collapsed={!collapsibleOpen}>
-            <FlatList
-              data={data}
-              renderItem={({ item }) => (
-                <TouchableOpacity
-                  style={styles.cardButton}
-                  onPress={item.action}
-                >
-                  <MaterialCommunityIcons
-                    name="file-document"
-                    size={24}
-                    color="#555"
-                  />
-                  <Text style={styles.cardButtonText}>{item.title}</Text>
-                </TouchableOpacity>
-              )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-          </Collapsible>
-          <StatusBar style="auto" />
-        </View>
+          </View>
+        </SafeAreaView>
       ) : (
         <>
           <View style={styles.container}>
@@ -100,10 +115,8 @@ export default function HomeScreen({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "left",
-    paddingTop: "40%",
   },
   collapsibleHeader: {
     flexDirection: "row",
@@ -120,11 +133,16 @@ const styles = StyleSheet.create({
     color: "#555",
   },
   hiName: {
-    padding: 5,
-    paddingLeft: 10,
-    fontSize: 15,
-    fontWeight: "bold",
+    padding: 20,
+    fontSize: 20,
+    fontWeight: "400",
     color: "#555",
+  },
+  hiText: {
+    fontSize: 20,
+    fontWeight: "700",
+    padding: 10,
+    color: "#7f82e1",
   },
   cardButton: {
     flexDirection: "row",

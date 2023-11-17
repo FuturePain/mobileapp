@@ -44,6 +44,13 @@ export default function App() {
             component={HomeScreen}
             options={{
               headerLargeTitle: true,
+              headerShadowVisible: false,
+              headerStyle: {
+                backgroundColor: "#c7d6ff",
+              },
+              headerTitleStyle: {
+                color: "white",
+              },
             }}
           />
           <Stack.Screen
