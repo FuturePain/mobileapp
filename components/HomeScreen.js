@@ -19,23 +19,6 @@ import AppCard from "./AppCard";
 import AppButton from "./AppButton";
 
 export default function HomeScreen({ navigation }) {
-  const [collapsibleOpen, setCollapsibleOpen] = useState(true);
-
-  const data = [
-    {
-      title: "Open login page (for debug purposes)",
-      action: () => navigation.replace("Login"),
-    },
-    {
-      title: "Open quiz page (debug)",
-      action: () => navigation.navigate("Quiz"),
-    },
-    {
-      title: "Open lesson page (debug)",
-      action: () => navigation.navigate("Lesson"),
-    },
-  ];
-
   const route = useRoute();
   const [userData, setUserData] = useState(route.params?.userData);
 
@@ -59,6 +42,7 @@ export default function HomeScreen({ navigation }) {
           <ScrollView
             contentContainerStyle={styles.container}
             contentInsetAdjustmentBehavior="automatic"
+            scrollEnabled={false}
           >
             <Text style={styles.hiName}>
               Welcome back{" "}
@@ -74,7 +58,13 @@ export default function HomeScreen({ navigation }) {
               <Text style={styles.hiText}>
                 1 / {pages.length + quizzes.length} modules completed
               </Text>
-              <AppCard title="Lesson 1: Mind Body Syndrome" completed />
+              <AppCard
+                title="Lesson 1: Mind Body Syndrome"
+                completed
+                onPress={() => {
+                  navigation.navigate("Lesson");
+                }}
+              />
               <AppCard title="Quiz 1: What is Pain?" />
 
               <Text style={styles.hiText}>

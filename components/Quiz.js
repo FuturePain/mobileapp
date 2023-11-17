@@ -54,7 +54,7 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                         styles.buttonTop,
                         {
                           backgroundColor: userAnswers.includes(index)
-                            ? "black"
+                            ? "#7f82e1"
                             : "#7f7f7f",
                         },
                       ]}
@@ -81,7 +81,7 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                         styles.buttonBottom,
                         {
                           backgroundColor: userAnswers.includes(index)
-                            ? "black"
+                            ? "#7f82e1"
                             : "#7f7f7f",
                         },
                       ]}
@@ -105,7 +105,7 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                         styles.button,
                         {
                           backgroundColor: userAnswers.includes(index)
-                            ? "black"
+                            ? "#7f82e1"
                             : "#7f7f7f",
                         },
                       ]}

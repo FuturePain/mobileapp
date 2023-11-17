@@ -4,7 +4,8 @@ const AppCard = ({ onPress, title, completed }) => (
   <TouchableOpacity
     activeOpacity={0.7}
     style={completed ? styles.appButtonContainer : styles.appButtonContainer1}
-    disabled
+    onPress={onPress}
+    // disabled
   >
     <Text style={completed ? styles.appButtonText : styles.appButtonText1}>
       {title}
