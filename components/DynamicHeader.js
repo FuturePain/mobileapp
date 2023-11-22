@@ -2,9 +2,34 @@ import * as React from "react";
 import { useEffect } from "react";
 import { Text, View, Animated, StyleSheet } from "react-native";
 
-const Header_Max_Height = 150;
-const Header_Min_Height = 100;
+const Header_Max_Height = 120;
+const Header_Min_Height = 80;
 const Scroll_Distance = Header_Max_Height - Header_Min_Height;
+
+const RGBAToHexA = (rgba, forceRemoveAlpha = false) => {
+  return (
+    "#" +
+    rgba
+      .replace(/^rgba?\(|\s+|\)$/g, "") // Get's rgba / rgb string values
+      .split(",") // splits them at ","
+      .filter((string, index) => !forceRemoveAlpha || index !== 3)
+      .map((string) => parseFloat(string)) // Converts them to numbers
+      .map((number, index) => (index === 3 ? Math.round(number * 255) : number)) // Converts alpha to 255 number
+      .map((number) => number.toString(16)) // Converts numbers to hex
+      .map((string) => (string.length === 1 ? "0" + string : string)) // Adds 0 when length of one number is 1
+      .join("")
+  ); // Puts the array to togehter to a string
+};
+
+const pickTextColorBasedOnBgColorSimple = (bgColor, lightColor, darkColor) => {
+  arr = JSON.stringify(bgColor).split("rgba(")[1].split(", ");
+  return parseFloat(arr[0]) * 0.299 +
+    parseFloat(arr[1]) * 0.587 +
+    parseFloat(arr[2]) * 0.114 >
+    186
+    ? darkColor
+    : lightColor;
+};
 
 const DynamicHeader = ({
   modDone,
@@ -24,12 +49,11 @@ const DynamicHeader = ({
     inputRange: [
       0,
       Header_Max_Height - Header_Min_Height,
-      0.4 * totalHeight,
-      0.6 * totalHeight,
-      0.8 * totalHeight,
+      0.45 * totalHeight,
+      0.75 * totalHeight,
       totalHeight,
     ],
-    outputRange: ["#ffb6c1", "red", "#FFD580", "yellow", "#90EE90", "#2AAA8A"],
+    outputRange: ["#ffb6c1", "#FFD580", "yellow", "#90EE90", "#2AAA8A"],
     extrapolate: "clamp",
   });
   return (
@@ -42,7 +66,18 @@ const DynamicHeader = ({
         },
       ]}
     >
-      <Text style={styles.headerText}>
+      <Text
+        style={[
+          styles.headerText,
+          {
+            color: pickTextColorBasedOnBgColorSimple(
+              animateHeaderBackgroundColor,
+              "#FFFFFF",
+              "#000000"
+            ),
+          },
+        ]}
+      >
         {Math.max(
           0,
           Math.min(100, Math.round((valueOfHeight * 100) / (0.8 * totalHeight)))
@@ -56,7 +91,15 @@ const DynamicHeader = ({
           ? "!"
           : ""}
       </Text>
-      <Text>
+      <Text
+        style={{
+          color: pickTextColorBasedOnBgColorSimple(
+            animateHeaderBackgroundColor,
+            "#FFFFFF",
+            "#000000"
+          ),
+        }}
+      >
         🕐{" "}
         {Math.round(
           totalTime -
@@ -70,23 +113,23 @@ const DynamicHeader = ({
               )) /
               100
         )}{" "}
-        minutes left to complete
+        minute
+        {Math.round(
+          totalTime -
+            (totalTime *
+              Math.max(
+                0,
+                Math.min(
+                  100,
+                  Math.round((valueOfHeight * 100) / (0.8 * totalHeight))
+                )
+              )) /
+              100
+        ) == 1
+          ? ""
+          : "s"}{" "}
+        left to complete
       </Text>
-      {valueOfHeight < Header_Max_Height ? (
-        <Text
-          style={{
-            color: "white",
-            fontWeight: 700,
-            padding: 3,
-            fontSize: 20,
-            textAlign: "center",
-          }}
-        >
-          Welcome to your lesson!
-        </Text>
-      ) : (
-        <></>
-      )}
     </Animated.View>
   );
 };

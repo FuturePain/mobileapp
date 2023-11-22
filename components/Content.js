@@ -17,17 +17,7 @@ import { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DynamicHeader from "./DynamicHeader";
 
-const scrollPercentage = ({
-  layoutMeasurement,
-  contentOffset,
-  contentSize,
-}) => {
-  return (
-    ((layoutMeasurement.height + contentOffset.y) / contentSize.height) * 100
-  );
-};
-
-export default function Content({ route, navigation, pageNumber = 1 }) {
+export default function Content({ route, navigation, pageNumber = 9 }) {
   const pageContent = pages[pageNumber - 1];
   if (!pageNumber) pageContent = pages[route.params.pageNumber - 1];
   let wordCount = pageContent.pageTitle.split(" ").length;
@@ -43,7 +33,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
   const handleScroll = (event) => {
     const positionY = event.nativeEvent.contentOffset.y;
     setValueOfHeight(positionY);
-    setTotalHeight(event.nativeEvent.contentSize.height);
+    setTotalHeight(event.nativeEvent.contentSize.height - 830);
   };
   return (
     <>
@@ -109,7 +99,6 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                           style={{
                             fontSize: 17,
                             fontWeight: "bold",
-                            padding: 6,
                           }}
                         >
                           {" " + text.substring(1) + " "}
@@ -124,7 +113,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                   arrToReturn.push(<Text>{"\n"}</Text>);
                 });
                 return (
-                  <Text style={{ lineHeight: 32, padding: 6 }}>
+                  <Text style={{ lineHeight: 30, paddingLeft: 6 }}>
                     {arrToReturn}
                   </Text>
                 );
@@ -149,7 +138,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                 elements.forEach((element) => {
                   const boldSeparation = parseBold(element);
                   arrToReturn.push(
-                    <Text style={{ fontSize: 25 }}>
+                    <Text style={{ fontSize: 20 }}>
                       {"\u29bf"}
                       {"  "}
                     </Text>
@@ -160,7 +149,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                       arrToReturn.push(
                         <Text
                           style={{
-                            fontSize: 20,
+                            fontSize: 17,
                             fontWeight: "bold",
                           }}
                         >
@@ -169,7 +158,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                       );
                     } else {
                       arrToReturn.push(
-                        <Text style={{ fontSize: 20 }}>{text}</Text>
+                        <Text style={{ fontSize: 17 }}>{text}</Text>
                       );
                     }
                   });
@@ -178,8 +167,8 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                 return (
                   <Text
                     style={{
-                      lineHeight: 32,
-                      padding: 6,
+                      lineHeight: 30,
+                      paddingLeft: 6,
                       justifyContent: "center",
                     }}
                   >
@@ -194,7 +183,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                   const boldSeparation = parseBold(element);
                   arrToReturn.push(
                     <Text style={{ fontSize: 18 }}>
-                      {"        \u29be"}
+                      {"\u29be"}
                       {"  "}
                     </Text>
                   );
@@ -208,7 +197,7 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
                             fontWeight: "bold",
                           }}
                         >
-                          {" " + text.substring(1) + " "}
+                          {text.substring(1)}
                         </Text>
                       );
                     } else {
@@ -248,9 +237,9 @@ export default function Content({ route, navigation, pageNumber = 1 }) {
               }}
             />
             <Button
-              title="Take the quiz →"
+              title="Move on →"
               onPress={() => {
-                navigation.navigate("Quiz");
+                // navigation.navigate("Quiz");
               }}
             />
           </View>

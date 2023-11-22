@@ -11,6 +11,7 @@ import {
   Pressable,
   TouchableHighlight,
   Alert,
+  Linking,
 } from "react-native";
 import quizzes from "./frameworks/QuizBody";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -37,6 +38,21 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
           <Text style={{ paddingBottom: 10 }}>
             {pageContent.quizDescription}
           </Text>
+          {pageContent.links.map((link) => {
+            return (
+              <>
+                <Text style={{ fontWeight: "bold" }}>{link[1]}</Text>
+                <Text
+                  style={{ paddingBottom: 10, color: "blue" }}
+                  onPress={async () => {
+                    await Linking.openURL(link[0]);
+                  }}
+                >
+                  {link[0]}
+                </Text>
+              </>
+            );
+          })}
           {pageContent.quizQuestions[currentQuestion].type == "multiple" ? (
             <>
               <Text
@@ -154,7 +170,7 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                 JSON.stringify(pageContent.quizAnswers[currentQuestion])
               ) {
                 Alert.alert(
-                  "Nice job!",
+                  "Thank you!",
                   "Your answer to this question was correct.",
                   [
                     {
@@ -164,9 +180,6 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
                           currentQuestion ==
                           pageContent.quizQuestions.length - 1
                         ) {
-                          // navigation.navigate("Lesson", {
-                          //   pageNumber: 1,
-                          // });
                           navigation.navigate("FUTUREPAIN");
                         } else {
                           setCurrentQuestion(currentQuestion + 1);

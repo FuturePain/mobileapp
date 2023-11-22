@@ -1,3 +1,6 @@
+import { quiz0 } from "./quizzes/quiz0";
+import { quiz1 } from "./quizzes/quiz1";
+
 const quizBody = (items) => {
   const vals = [
     "quizTitle",
@@ -6,6 +9,7 @@ const quizBody = (items) => {
     "quizChoices",
     "quizFeedbacks",
     "quizAnswers",
+    "links",
   ];
   // quizChoices is an array of arrays
   // quizQuestions is an array of objects:
@@ -25,29 +29,5 @@ const quizBody = (items) => {
 
 export const images = {};
 
-const quiz1 = quizBody([
-  "Quiz: What is Pain?",
-  "This is just for your understanding. It is important to understand the many causes of your pain and why these treatments can work against your pain.",
-  [
-    {
-      type: "multiple",
-      content: "True or false: pain only occurs due to physical injuries.",
-    },
-    {
-      type: "multiple",
-      content: "True or false: pain can occur due to stress.",
-    },
-  ],
-  [
-    ["True", "False"],
-    ["True", "False"],
-  ],
-  [
-    "Remember, pain is partly an emotional experience as well!",
-    "Pain can occur because of stress related emotions.",
-  ],
-  [[1], [0]],
-]);
-
-const quizzes = [quiz1]; // populate array based on results/items
+const quizzes = [quiz0, quiz1]; // populate array based on results/items
 export default quizzes;

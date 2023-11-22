@@ -42,7 +42,6 @@ export default function HomeScreen({ navigation }) {
           <ScrollView
             contentContainerStyle={styles.container}
             contentInsetAdjustmentBehavior="automatic"
-            scrollEnabled={false}
           >
             <Text style={styles.hiName}>
               Welcome back{" "}
@@ -85,9 +84,9 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <AppButton
-              title="Begin next module: Quiz 1"
+              title="Begin next module"
               onPress={() => {
-                navigation.navigate("Quiz");
+                navigation.navigate("Lesson");
               }}
             />
           </View>
