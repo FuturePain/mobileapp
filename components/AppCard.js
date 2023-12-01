@@ -16,7 +16,7 @@ const AppCard = ({ onPress, title, completed }) => (
 const styles = StyleSheet.create({
   appButtonContainer: {
     elevation: 8,
-    backgroundColor: "#BFFFBF",
+    backgroundColor: "green",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 12,
@@ -27,7 +27,7 @@ const styles = StyleSheet.create({
   },
   appButtonContainer1: {
     elevation: 8,
-    backgroundColor: "#FFBFBF",
+    backgroundColor: "red",
     borderRadius: 5,
     paddingVertical: 10,
     paddingHorizontal: 12,
@@ -38,13 +38,13 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
     fontSize: 18,
-    color: "green",
+    color: "white",
     fontWeight: "bold",
     alignSelf: "center",
   },
   appButtonText1: {
     fontSize: 18,
-    color: "red",
+    color: "white",
     fontWeight: "bold",
     alignSelf: "center",
   },

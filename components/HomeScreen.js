@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -10,20 +10,69 @@ import {
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
-import { useRoute } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import * as SecureStore from "expo-secure-store";
 import { SafeAreaView } from "react-native-safe-area-context";
 import pages from "./frameworks/ContentBody";
 import quizzes from "./frameworks/QuizBody";
 import AppCard from "./AppCard";
 import AppButton from "./AppButton";
+import modules from "./frameworks/constants";
+
+const translateIndex = (ind) => {
+  const modString = modules[ind].split("");
+  const type = modString[0],
+    num = parseInt(modString[1]);
+  return {
+    type,
+    num,
+  };
+};
+
+const generateTitle = (idx) => {
+  const obj = translateIndex(idx);
+  switch (obj.type) {
+    case "p":
+      return obj.num in pages ? pages[obj.num]["pageTitle"] : "";
+    case "m":
+      return "";
+    case "q":
+      return obj.num in quizzes ? quizzes[obj.num]["quizTitle"] : "";
+  }
+};
 
 export default function HomeScreen({ navigation }) {
   const route = useRoute();
   const [userData, setUserData] = useState(route.params?.userData);
+  const [contentIndex, setIndex] = useState(0);
+
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUser = async () => {
+        let userProgress = await SecureStore.getItemAsync("userProgress");
+        if (userProgress) {
+          const userBody = parseInt(userProgress);
+          setIndex(userBody);
+        } else {
+          navigation.navigate("Login");
+        }
+      };
+
+      fetchUser();
+
+      return () => {};
+    }, [])
+  );
 
   async function fetch() {
     let userData = await SecureStore.getItemAsync("userData");
+    let userProgress = await SecureStore.getItemAsync("userProgress");
+    if (userProgress) {
+      const userBody = parseInt(userProgress);
+      setIndex(userBody);
+    } else {
+      navigation.navigate("Login");
+    }
     if (userData) {
       const userBody = JSON.parse(userData);
       setUserData(userBody);
@@ -42,6 +91,7 @@ export default function HomeScreen({ navigation }) {
           <ScrollView
             contentContainerStyle={styles.container}
             contentInsetAdjustmentBehavior="automatic"
+            scrollEnabled={false}
           >
             <Text style={styles.hiName}>
               Welcome back{" "}
@@ -55,16 +105,21 @@ export default function HomeScreen({ navigation }) {
                 Your progress in the study:
               </Text>
               <Text style={styles.hiText}>
-                1 / {pages.length + quizzes.length} modules completed
+                {contentIndex} / {modules.length} modules completed
               </Text>
-              <AppCard
-                title="Lesson 1: Mind Body Syndrome"
-                completed
-                onPress={() => {
-                  navigation.navigate("Lesson");
-                }}
-              />
-              <AppCard title="Quiz 1: What is Pain?" />
+              {modules.map((mod, idx) => {
+                if (idx - contentIndex >= -1 && idx - contentIndex <= 4) {
+                  return (
+                    <AppCard
+                      title={generateTitle(idx)}
+                      completed={idx < contentIndex}
+                      onPress={() => {
+                        navigation.navigate("Lesson");
+                      }}
+                    />
+                  );
+                }
+              })}
 
               <Text style={styles.hiText}>
                 Study closes on{" "}

@@ -24,7 +24,7 @@ const quizBody = (items) => {
   return result;
 };
 
-export const quiz1 = quizBody([
+export const quiz2 = quizBody([
   "Quiz: What is Pain?",
   "This is just for your understanding. It is important to understand the many causes of your pain and why these treatments can work against your pain.",
   [

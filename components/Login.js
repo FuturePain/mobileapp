@@ -164,12 +164,7 @@ export default function Login({ navigation }) {
                     "userData",
                     JSON.stringify(userData)
                   );
-                  await SecureStore.setItemAsync(
-                    "userProgress",
-                    JSON.stringify({
-                      overall: "0",
-                    })
-                  );
+                  await SecureStore.setItemAsync("userProgress", "0");
                 } else {
                   Alert.alert(
                     "Username not found",
