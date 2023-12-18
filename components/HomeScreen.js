@@ -19,7 +19,7 @@ import AppCard from "./AppCard";
 import AppButton from "./AppButton";
 import modules from "./frameworks/constants";
 
-const translateIndex = (ind) => {
+export const translateIndex = (ind) => {
   const modString = modules[ind].split("");
   const type = modString[0],
     num = parseInt(modString[1]);
@@ -35,7 +35,7 @@ const generateTitle = (idx) => {
     case "p":
       return obj.num in pages ? pages[obj.num]["pageTitle"] : "";
     case "m":
-      return "";
+      return "New Module!";
     case "q":
       return obj.num in quizzes ? quizzes[obj.num]["quizTitle"] : "";
   }
@@ -91,7 +91,6 @@ export default function HomeScreen({ navigation }) {
           <ScrollView
             contentContainerStyle={styles.container}
             contentInsetAdjustmentBehavior="automatic"
-            scrollEnabled={false}
           >
             <Text style={styles.hiName}>
               Welcome back{" "}
@@ -110,13 +109,36 @@ export default function HomeScreen({ navigation }) {
               {modules.map((mod, idx) => {
                 if (idx - contentIndex >= -1 && idx - contentIndex <= 4) {
                   return (
-                    <AppCard
-                      title={generateTitle(idx)}
-                      completed={idx < contentIndex}
-                      onPress={() => {
-                        navigation.navigate("Lesson");
+                    <View
+                      flexDirection="row"
+                      style={{
+                        justifyContent: "center",
+                        alignContent: "center",
                       }}
-                    />
+                    >
+                      <Text
+                        style={{
+                          height: "100%",
+                          textAlign: "center",
+                          fontWeight: "600",
+                          marginRight: 10,
+                        }}
+                      >
+                        {idx + 1}
+                      </Text>
+                      <AppCard
+                        title={
+                          idx - contentIndex < 0
+                            ? generateTitle(idx) + " ✅"
+                            : generateTitle(idx)
+                        }
+                        completed={idx < contentIndex}
+                        onPress={() => {
+                          navigation.navigate("Lesson");
+                        }}
+                        disabled
+                      />
+                    </View>
                   );
                 }
               })}
@@ -141,7 +163,16 @@ export default function HomeScreen({ navigation }) {
             <AppButton
               title="Begin next module"
               onPress={() => {
-                navigation.navigate("Lesson");
+                const { type, num } = translateIndex(contentIndex);
+                if (type == "p") {
+                  navigation.navigate("Lesson", { pageNumber: num + 1 });
+                } else if (type == "q") {
+                  navigation.navigate("Quiz", { pageNumber: num + 1 });
+                } else {
+                  navigation.navigate("Module", {
+                    pageNumber: num + 1,
+                  });
+                }
               }}
             />
           </View>

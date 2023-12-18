@@ -25,4 +25,25 @@ const modules = [
 // m: module introduction
 // q: quiz
 
+import * as SecureStore from "expo-secure-store";
+export const incrementAndReturnIndex = async () => {
+  let contentIndex = await SecureStore.getItemAsync("userProgress");
+  if (contentIndex) {
+    contentIndex = parseInt(contentIndex) + 1;
+  }
+  let updateProg = await SecureStore.setItemAsync(
+    "userProgress",
+    contentIndex.toString()
+  );
+  return contentIndex;
+};
+
+export const moduleTitles = [
+  "Background",
+  "The Mind Body Syndrome",
+  "Exercises To Help Your Pain",
+  "Mindfulness",
+  "Extra Information",
+];
+
 export default modules;

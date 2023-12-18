@@ -17,8 +17,12 @@ import quizzes from "./frameworks/QuizBody";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import AppButton from "./AppButton";
+import { useRoute } from "@react-navigation/native";
+import { incrementAndReturnIndex } from "./frameworks/constants";
 
-export default function Quiz({ navigation, pageNumber = 1 }) {
+export default function Quiz({ navigation, pageNumber = 0 }) {
+  const route = useRoute();
+  if (route.params) pageNumber = route.params?.pageNumber;
   const pageContent = quizzes[pageNumber - 1];
   const [userAnswers, setUserAnswers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -171,15 +175,21 @@ export default function Quiz({ navigation, pageNumber = 1 }) {
               ) {
                 Alert.alert(
                   "Thank you!",
-                  "Your answer to this question was correct.",
+                  currentQuestion == pageContent.quizQuestions.length - 1
+                    ? "That's all! Thanks for completing the quiz!"
+                    : "Your answer to this question was correct.",
                   [
                     {
-                      text: "Next question",
-                      onPress: () => {
+                      text:
+                        currentQuestion == pageContent.quizQuestions.length - 1
+                          ? "Finish quiz"
+                          : "Next question",
+                      onPress: async () => {
                         if (
                           currentQuestion ==
                           pageContent.quizQuestions.length - 1
                         ) {
+                          await incrementAndReturnIndex();
                           navigation.navigate("FUTUREPAIN");
                         } else {
                           setCurrentQuestion(currentQuestion + 1);

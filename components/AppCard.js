@@ -1,11 +1,11 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const AppCard = ({ onPress, title, completed }) => (
+const AppCard = ({ onPress, title, completed, disabled }) => (
   <TouchableOpacity
     activeOpacity={0.7}
     style={completed ? styles.appButtonContainer : styles.appButtonContainer1}
     onPress={onPress}
-    // disabled
+    disabled={disabled}
   >
     <Text style={completed ? styles.appButtonText : styles.appButtonText1}>
       {title}

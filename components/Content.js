@@ -16,10 +16,14 @@ import pages, {
 import { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DynamicHeader from "./DynamicHeader";
+import { useRoute } from "@react-navigation/native";
+import MoveOnButton from "./MoveOnButton";
+import { incrementAndReturnIndex } from "./frameworks/constants";
 
-export default function Content({ route, navigation, pageNumber = 9 }) {
+export default function Content({ navigation, pageNumber = 0 }) {
+  const route = useRoute();
+  if (route.params) pageNumber = route.params?.pageNumber;
   const pageContent = pages[pageNumber - 1];
-  if (!pageNumber) pageContent = pages[route.params.pageNumber - 1];
   let wordCount = pageContent.pageTitle.split(" ").length;
   for (let i = 0; i < pageContent.listOfBody.length; i++) {
     wordCount += pageContent.listOfBody[i].content.split(" ").length;
@@ -232,16 +236,12 @@ export default function Content({ route, navigation, pageNumber = 9 }) {
           >
             <Button
               title="← Take a break"
-              onPress={() => {
+              onPress={async () => {
+                await incrementAndReturnIndex();
                 navigation.navigate("FUTUREPAIN");
               }}
             />
-            <Button
-              title="Move on →"
-              onPress={() => {
-                // navigation.navigate("Quiz");
-              }}
-            />
+            <MoveOnButton navigation={navigation} />
           </View>
           <StatusBar style="auto" />
         </ScrollView>

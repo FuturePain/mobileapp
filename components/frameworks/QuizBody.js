@@ -1,4 +1,5 @@
 import { quiz0 } from "./quizzes/quiz0";
+import { quiz1 } from "./quizzes/quiz1";
 import { quiz2 } from "./quizzes/quiz2";
 
 const quizBody = (items) => {
@@ -29,5 +30,5 @@ const quizBody = (items) => {
 
 export const images = {};
 
-const quizzes = [quiz0, quiz2]; // populate array based on results/items
+const quizzes = [quiz0, quiz1, quiz2]; // populate array based on results/items
 export default quizzes;

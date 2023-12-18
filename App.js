@@ -10,6 +10,7 @@ import Quiz from "./components/Quiz";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
+import Module from "./components/Module";
 
 const Stack = createNativeStackNavigator();
 
@@ -66,6 +67,14 @@ export default function App() {
               headerLargeTitle: true,
               gestureEnabled: false,
               headerShadowVisible: false,
+            }}
+          />
+          <Stack.Screen
+            name="Module"
+            component={Module}
+            options={{
+              headerShown: false,
+              gestureEnabled: false,
             }}
           />
         </Stack.Navigator>
