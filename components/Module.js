@@ -63,7 +63,7 @@ export default function Module({ navigation, pageNumber = 0 }) {
           >
             You've just entered a new module. As the study is sectioned into
             multiple modules, the content you will encounter will also be
-            different across modules. Ready to go?
+            different across modules. Good to go?
           </Text>
         </View>
         <View

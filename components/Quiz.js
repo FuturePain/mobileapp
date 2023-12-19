@@ -13,12 +13,14 @@ import {
   Alert,
   Linking,
 } from "react-native";
-import quizzes from "./frameworks/QuizBody";
+import quizzes, { VideoPlayer } from "./frameworks/QuizBody";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AppButton from "./AppButton";
 import { useRoute } from "@react-navigation/native";
 import { incrementAndReturnIndex } from "./frameworks/constants";
+import { Video, ResizeMode } from "expo-av";
+import InteractiveTextInput from "react-native-text-input-interactive";
 
 export default function Quiz({ navigation, pageNumber = 0 }) {
   const route = useRoute();
@@ -26,6 +28,9 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
   const pageContent = quizzes[pageNumber - 1];
   const [userAnswers, setUserAnswers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
+
+  const ifVideoRef = useRef(null);
+  const [playing, setPlaying] = useState({});
 
   useEffect(() => {
     navigation.setOptions({
@@ -145,14 +150,74 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                 }
               })}
             </>
-          ) : (
-            <Text
-              key={pageContent.quizQuestions[currentQuestion].content}
-              style={{ fontSize: 25, fontWeight: "500", padding: 10 }}
+          ) : pageContent.quizQuestions[currentQuestion].type == "video" ? (
+            <View
+              style={{
+                flex: 1,
+                justifyContent: "center",
+                width: "100%",
+              }}
             >
-              {currentQuestion + 1}
-              {")"} {pageContent.quizQuestions[currentQuestion].content}
-            </Text>
+              <Video
+                ref={ifVideoRef}
+                style={{
+                  alignSelf: "center",
+                  width: "100%",
+                  height: 200,
+                  marginBottom: 10,
+                }}
+                source={pageContent.quizQuestions[currentQuestion].content}
+                useNativeControls
+                resizeMode={ResizeMode.CONTAIN}
+                onPlaybackStatusUpdate={(playing) => setPlaying(() => playing)}
+                key={pageContent.quizQuestions[currentQuestion].content}
+              />
+              <View
+                style={{
+                  height: 70,
+                  justifyContent: "center",
+                  borderRadius: 15,
+                  backgroundColor: "#7f82e1",
+                }}
+              >
+                <Button
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                  }}
+                  color="white"
+                  title={
+                    playing.isPlaying ? "Pause the video" : "Play the video"
+                  }
+                  onPress={() =>
+                    playing.isPlaying
+                      ? ifVideoRef.current.pauseAsync()
+                      : ifVideoRef.current.playAsync()
+                  }
+                />
+              </View>
+            </View>
+          ) : (
+            <View key={pageContent.quizQuestions[currentQuestion].content}>
+              <Text style={{ fontSize: 25, fontWeight: "500", padding: 10 }}>
+                {pageContent.quizQuestions[currentQuestion].content}
+              </Text>
+              {/* TODO: Submit answers to external API/database */}
+              <InteractiveTextInput
+                autoCapitalize="none"
+                autoCorrect={false}
+                autoComplete="off"
+                placeholder="Type your answer here"
+                // value={answer}
+                onEndEditing={(a) => {
+                  // let tempAnswers = userAnswers.slice();
+                  // if (tempAnswers.length <= currentQuestion)
+                  //   tempAnswers.push(a.nativeEvent.text);
+                  // else tempAnswers[currentQuestion] = a.nativeEvent.text;
+                  // setUserAnswers(tempAnswers);
+                }}
+              />
+            </View>
           )}
           <StatusBar style="auto" />
         </ScrollView>
@@ -168,42 +233,51 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
             title="Next question"
             style={{ fontWeight: "bold" }}
             onPress={() => {
-              const answers = [...new Set(userAnswers)].sort();
-              if (
-                JSON.stringify(answers) ==
-                JSON.stringify(pageContent.quizAnswers[currentQuestion])
-              ) {
-                Alert.alert(
-                  "Thank you!",
-                  currentQuestion == pageContent.quizQuestions.length - 1
-                    ? "That's all! Thanks for completing the quiz!"
-                    : "Your answer to this question was correct.",
-                  [
-                    {
-                      text:
-                        currentQuestion == pageContent.quizQuestions.length - 1
-                          ? "Finish quiz"
-                          : "Next question",
-                      onPress: async () => {
-                        if (
+              if (pageContent.quizQuestions[currentQuestion].type == "video") {
+                setCurrentQuestion(currentQuestion + 1);
+                setUserAnswers([]);
+              } else {
+                const answers = [...new Set(userAnswers)].sort();
+                if (
+                  JSON.stringify(answers) ==
+                  JSON.stringify(pageContent.quizAnswers[currentQuestion])
+                ) {
+                  Alert.alert(
+                    "Thank you!",
+                    currentQuestion == pageContent.quizQuestions.length - 1
+                      ? "That's all! Thanks for completing the quiz!"
+                      : pageContent.quizQuestions[currentQuestion].type !=
+                        "shortform"
+                      ? "Your answer to this question was correct."
+                      : "Thanks for submitting your answer!",
+                    [
+                      {
+                        text:
                           currentQuestion ==
                           pageContent.quizQuestions.length - 1
-                        ) {
-                          await incrementAndReturnIndex();
-                          navigation.navigate("FUTUREPAIN");
-                        } else {
-                          setCurrentQuestion(currentQuestion + 1);
-                          setUserAnswers([]);
-                        }
+                            ? "Finish quiz"
+                            : "Next question",
+                        onPress: async () => {
+                          if (
+                            currentQuestion ==
+                            pageContent.quizQuestions.length - 1
+                          ) {
+                            await incrementAndReturnIndex();
+                            navigation.navigate("FUTUREPAIN");
+                          } else {
+                            setCurrentQuestion(currentQuestion + 1);
+                            setUserAnswers([]);
+                          }
+                        },
                       },
-                    },
-                  ]
-                );
-              } else {
-                Alert.alert(
-                  "Close!",
-                  pageContent.quizFeedbacks[currentQuestion]
-                );
+                    ]
+                  );
+                } else {
+                  Alert.alert(
+                    "Close!",
+                    pageContent.quizFeedbacks[currentQuestion]
+                  );
+                }
               }
             }}
           />
