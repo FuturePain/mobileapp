@@ -49,6 +49,7 @@ export const images = {
   "6-1.png": require("../../course-assets/6-1.png"),
   "6-2.png": require("../../course-assets/6-2.png"),
   "7-1.png": require("../../course-assets/7-1.png"),
+  "9-1.png": require("../../course-assets/9-1.png"),
 };
 const pages = [page0, page1, page2, page3, page4, page5, page6, page7, page8]; // populate array based on results/items
 export default pages;

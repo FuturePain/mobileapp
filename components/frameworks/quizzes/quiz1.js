@@ -39,9 +39,7 @@ export const quiz1 = quizBody([
     },
   ],
   [[], []],
-  [
-    "Please fill out all the links - this is a legal obligation before starting the study.",
-  ],
+  ["", ""],
   [[], []],
   [],
 ]);

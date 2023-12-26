@@ -3,11 +3,10 @@ const modules = [
   "m0",
   "q0",
   "q1",
-  "q2",
   "p1",
   "p2",
   "q2",
-  "m1",
+  "m1", // Mind body syndrome
   "q3",
   "p3",
   "p4",
@@ -17,8 +16,9 @@ const modules = [
   "p7",
   "q5",
   "q6",
+  "m2",
   "q7",
-  "p8",
+  "p8", // Intro to exercises
 ];
 
 // p: page
