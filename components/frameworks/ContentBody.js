@@ -7,19 +7,21 @@ import { page5 } from "./pages/page5";
 import { page6 } from "./pages/page6";
 import { page7 } from "./pages/page7";
 import { page8 } from "./pages/page8";
-
-export const contentBody = (items) => {
-  const vals = ["pageTitle", "listOfBody"];
-  // will iterate through body with different types: heading, subheading, body, image, bullet, bulletalert
-  // to bold, put *# in front of and * at the end of the desired phrase
-  // to condense repeated element types, put ^ in front of next bullet point
-  const it = items;
-  let result = {};
-  for (let i = 0; i < items.length; i++) {
-    result[vals[i]] = it[i];
-  }
-  return result;
-};
+import { page9 } from "./pages/page9";
+import { page10 } from "./pages/page10";
+import { page11 } from "./pages/page11";
+import { page12 } from "./pages/page12";
+import { page13 } from "./pages/page13";
+import { page14 } from "./pages/page14";
+import { page15 } from "./pages/page15";
+import { page16 } from "./pages/page16";
+import { page17 } from "./pages/page17";
+import { page18 } from "./pages/page18";
+import { page19 } from "./pages/page19";
+import { page20 } from "./pages/page20";
+import { page21 } from "./pages/page21";
+import { page22 } from "./pages/page22";
+import { page23 } from "./pages/page23";
 
 export const parseNewElement = (content) => {
   return content.split("^");
@@ -50,6 +52,48 @@ export const images = {
   "6-2.png": require("../../course-assets/6-2.png"),
   "7-1.png": require("../../course-assets/7-1.png"),
   "9-1.png": require("../../course-assets/9-1.png"),
+  "10-1.png": require("../../course-assets/10-1.png"),
+  "11-1.png": require("../../course-assets/11-1.png"),
+  "12-1.png": require("../../course-assets/12-1.png"),
+  "13-1.png": require("../../course-assets/13-1.png"),
+  "14-1.png": require("../../course-assets/14-1.png"),
+  "15-1.png": require("../../course-assets/15-1.png"),
+  "17-1.png": require("../../course-assets/17-1.png"),
+  "17-2.png": require("../../course-assets/17-2.png"),
+  "18-1.png": require("../../course-assets/18-1.png"),
+  "18-2.png": require("../../course-assets/18-2.png"),
+  "19-1.png": require("../../course-assets/19-1.png"),
+  "19-2.png": require("../../course-assets/19-2.png"),
+  "19-3.png": require("../../course-assets/19-3.png"),
+  "20-1.png": require("../../course-assets/20-1.png"),
+  "21-1.png": require("../../course-assets/21-1.png"),
+  "22-1.png": require("../../course-assets/22-1.png"),
+  "23-1.png": require("../../course-assets/23-1.png"),
 };
-const pages = [page0, page1, page2, page3, page4, page5, page6, page7, page8]; // populate array based on results/items
+const pages = [
+  page0,
+  page1,
+  page2,
+  page3,
+  page4,
+  page5,
+  page6,
+  page7,
+  page8,
+  page9,
+  page10,
+  page11,
+  page12,
+  page13,
+  page14,
+  page15,
+  page16,
+  page17,
+  page18,
+  page19,
+  page20,
+  page21,
+  page22,
+  page23,
+]; // populate array based on results/items
 export default pages;

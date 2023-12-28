@@ -330,7 +330,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingVertical: 12,
     paddingHorizontal: 32,
-    borderRadius: 10,
     elevation: 3,
     backgroundColor: "#7f7f7f",
     width: "100%",

@@ -19,6 +19,7 @@ import DynamicHeader from "./DynamicHeader";
 import { useRoute } from "@react-navigation/native";
 import MoveOnButton from "./MoveOnButton";
 import { incrementAndReturnIndex } from "./frameworks/constants";
+import { translateIndex } from "./HomeScreen";
 
 export default function Content({ navigation, pageNumber = 0 }) {
   const route = useRoute();
@@ -39,6 +40,7 @@ export default function Content({ navigation, pageNumber = 0 }) {
     setValueOfHeight(positionY);
     setTotalHeight(event.nativeEvent.contentSize.height - 830);
   };
+  const scrollViewRef = useRef(null);
   return (
     <>
       <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -53,6 +55,7 @@ export default function Content({ navigation, pageNumber = 0 }) {
         <ScrollView
           contentContainerStyle={styles.container}
           scrollEventThrottle={10}
+          ref={scrollViewRef}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: scrollOffsetY } } }],
             { listener: (event) => handleScroll(event), useNativeDriver: false }
@@ -241,7 +244,28 @@ export default function Content({ navigation, pageNumber = 0 }) {
                 navigation.navigate("FUTUREPAIN");
               }}
             />
-            <MoveOnButton navigation={navigation} />
+            <Button
+              title="Move on →"
+              onPress={async () => {
+                const contentIndex = await incrementAndReturnIndex();
+                const { type, num } = translateIndex(contentIndex);
+                if (type == "p") {
+                  navigation.navigate("Lesson", {
+                    pageNumber: num + 1,
+                  });
+                  scrollViewRef.current?.scrollTo({
+                    y: 0,
+                    animated: true,
+                  });
+                } else if (type == "m") {
+                  navigation.navigate("Module", {
+                    pageNumber: num + 1,
+                  });
+                } else {
+                  navigation.navigate("Quiz", { pageNumber: num + 1 });
+                }
+              }}
+            />
           </View>
           <StatusBar style="auto" />
         </ScrollView>

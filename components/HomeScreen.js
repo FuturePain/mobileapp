@@ -100,14 +100,62 @@ export default function HomeScreen({ navigation }) {
               !{" "}
             </Text>
             <View style={{ alignItems: "center", width: "100%" }}>
-              <Text style={[styles.hiText, { fontSize: 30 }]}>
-                Your progress in the study:
-              </Text>
-              <Text style={styles.hiText}>
-                {contentIndex} / {modules.length} modules completed
+              <Text style={[styles.hiText, { fontSize: 25 }]}>
+                {contentIndex} / {modules.length} activities completed
               </Text>
               {modules.map((mod, idx) => {
-                if (idx - contentIndex >= -1 && idx - contentIndex <= 4) {
+                if (idx - contentIndex == -1) {
+                  return (
+                    <>
+                      <Text
+                        style={[
+                          styles.hiText,
+                          { marginLeft: 10, textAlign: "center" },
+                        ]}
+                      >
+                        Just finished:{" "}
+                      </Text>
+                      <View
+                        flexDirection="row"
+                        style={{
+                          justifyContent: "center",
+                          alignContent: "center",
+                        }}
+                      >
+                        <Text
+                          style={{
+                            height: "100%",
+                            textAlign: "center",
+                            fontWeight: "600",
+                            marginRight: 10,
+                          }}
+                        >
+                          {idx + 1}
+                        </Text>
+                        <AppCard
+                          title={
+                            idx - contentIndex < 0
+                              ? generateTitle(idx) + " ✅"
+                              : generateTitle(idx)
+                          }
+                          completed={idx < contentIndex}
+                          onPress={() => {
+                            navigation.navigate("Lesson");
+                          }}
+                          disabled
+                        />
+                      </View>
+                      <Text
+                        style={[
+                          styles.hiText,
+                          { textAlign: "center", marginLeft: 10 },
+                        ]}
+                      >
+                        Coming up:{" "}
+                      </Text>
+                    </>
+                  );
+                } else if (idx - contentIndex > -1 && idx - contentIndex < 4) {
                   return (
                     <View
                       flexDirection="row"
