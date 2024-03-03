@@ -243,13 +243,13 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                   JSON.stringify(pageContent.quizAnswers[currentQuestion])
                 ) {
                   Alert.alert(
-                    "Thank you!",
+                    "Done!",
                     currentQuestion == pageContent.quizQuestions.length - 1
-                      ? "That's all! Thanks for completing the quiz!"
+                      ? "That's all! Thanks for your response!"
                       : pageContent.quizQuestions[currentQuestion].type !=
                         "shortform"
                       ? "Your answer to this question was correct."
-                      : "Thanks for submitting your answer!",
+                      : "Thanks for your response!",
                     [
                       {
                         text:

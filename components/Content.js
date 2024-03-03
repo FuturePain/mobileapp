@@ -146,7 +146,7 @@ export default function Content({ navigation, pageNumber = 0 }) {
                   const boldSeparation = parseBold(element);
                   arrToReturn.push(
                     <Text style={{ fontSize: 20 }}>
-                      {"\u29bf"}
+                      {"\u2022"}
                       {"  "}
                     </Text>
                   );
@@ -190,7 +190,7 @@ export default function Content({ navigation, pageNumber = 0 }) {
                   const boldSeparation = parseBold(element);
                   arrToReturn.push(
                     <Text style={{ fontSize: 18 }}>
-                      {"\u29be"}
+                      {"\u2022"}
                       {"  "}
                     </Text>
                   );
