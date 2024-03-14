@@ -44,9 +44,17 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
           contentContainerStyle={styles.container}
           contentInsetAdjustmentBehavior="automatic"
         >
-          <Text style={{ paddingBottom: 10 }}>
-            {pageContent.quizDescription}
+          <Text style={{ paddingBottom: 10, fontWeight: 800 }}>
+            If there is a video on this page but you do not hear sound, please
+            unmute (the switch button on the side of your device).
           </Text>
+          {pageContent.quizQuestions[currentQuestion].type == "video" ? (
+            <Text style={{ paddingBottom: 10 }}>
+              {pageContent.quizDescription}
+            </Text>
+          ) : (
+            <></>
+          )}
           {pageContent.links.map((link) => {
             return (
               <>
@@ -255,7 +263,7 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                         text:
                           currentQuestion ==
                           pageContent.quizQuestions.length - 1
-                            ? "Finish quiz"
+                            ? "Finish activity"
                             : "Next question",
                         onPress: async () => {
                           if (

@@ -22,7 +22,7 @@ import modules from "./frameworks/constants";
 export const translateIndex = (ind) => {
   const modString = modules[ind].split("");
   const type = modString[0],
-    num = parseInt(modString[1]);
+    num = parseInt(modString.slice(1, modString.length).join(""));
   return {
     type,
     num,
@@ -67,6 +67,7 @@ export default function HomeScreen({ navigation }) {
   async function fetch() {
     let userData = await SecureStore.getItemAsync("userData");
     let userProgress = await SecureStore.getItemAsync("userProgress");
+    // await SecureStore.deleteItemAsync("userData");
     if (userProgress) {
       const userBody = parseInt(userProgress);
       setIndex(userBody);

@@ -25,7 +25,7 @@ export const page13 = contentBody([
     },
     {
       type: "bullet",
-      content: "job^^marriage^^children^^parents",
+      content: "job^marriage^children^parents",
     },
     {
       type: "body",

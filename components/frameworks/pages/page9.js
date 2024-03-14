@@ -43,7 +43,7 @@ export const page9 = contentBody([
     {
       type: "bullet",
       content:
-        "Traits^^Childhood^^Pleasing People^^Life Responsibilities^^Getting older^^Close relationships^^Other cases",
+        "Traits^Childhood^Pleasing People^Life Responsibilities^Getting older^Close relationships^Other cases",
     },
     {
       type: "body",

@@ -44,7 +44,7 @@ export const page17 = contentBody([
     {
       type: "bullet",
       content:
-        "❌ Do NOT go to fear or hurt yet.^^🗣️ Say whatever comes to mind to express your anger.^^✔️ Allow yourself to feel guilt and grief.",
+        "❌ Do NOT go to fear or hurt yet.^🗣️ Say whatever comes to mind to express your anger.^✔️ Allow yourself to feel guilt and grief.",
     },
     {
       type: "body",

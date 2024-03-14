@@ -57,7 +57,11 @@ export default function App() {
           <Stack.Screen
             name="Lesson"
             component={Content}
-            options={{ headerShown: false, gestureEnabled: false }}
+            options={{
+              headerShown: false,
+              gestureEnabled: false,
+              animation: "fade_from_bottom",
+            }}
           />
           <Stack.Screen
             name="Quiz"
@@ -67,6 +71,7 @@ export default function App() {
               headerLargeTitle: true,
               gestureEnabled: false,
               headerShadowVisible: false,
+              animation: "fade_from_bottom",
             }}
           />
           <Stack.Screen
@@ -75,6 +80,7 @@ export default function App() {
             options={{
               headerShown: false,
               gestureEnabled: false,
+              animation: "slide_from_bottom",
             }}
           />
         </Stack.Navigator>

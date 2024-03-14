@@ -238,13 +238,13 @@ export default function Content({ navigation, pageNumber = 0 }) {
             }}
           >
             <Button
-              title="← Take a break"
+              title="Done!"
               onPress={async () => {
                 await incrementAndReturnIndex();
                 navigation.navigate("FUTUREPAIN");
               }}
             />
-            <Button
+            {/* <Button
               title="Move on →"
               onPress={async () => {
                 const contentIndex = await incrementAndReturnIndex();
@@ -265,7 +265,7 @@ export default function Content({ navigation, pageNumber = 0 }) {
                   navigation.navigate("Quiz", { pageNumber: num + 1 });
                 }
               }}
-            />
+            /> */}
           </View>
           <StatusBar style="auto" />
         </ScrollView>

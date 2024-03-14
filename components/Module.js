@@ -63,7 +63,7 @@ export default function Module({ navigation, pageNumber = 0 }) {
           >
             You've just entered a new module. As the study is sectioned into
             multiple modules, the content you will encounter will also be
-            different across modules. Good to go?
+            different across modules. Ready?
           </Text>
         </View>
         <View
@@ -74,7 +74,13 @@ export default function Module({ navigation, pageNumber = 0 }) {
             gap: "50%",
           }}
         >
-          <MoveOnButton navigation={navigation} />
+          <Button
+            title="Continue"
+            onPress={async () => {
+              await incrementAndReturnIndex();
+              navigation.navigate("FUTUREPAIN");
+            }}
+          />
         </View>
         <StatusBar style="auto" />
       </SafeAreaView>

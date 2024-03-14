@@ -26,7 +26,7 @@ export const page10 = contentBody([
     {
       type: "bullet",
       content:
-        "be a perfectionist^^anger quickly^^have high expectations of yourself^^are sensitive to criticism^^feel guilt/fear/worry easily",
+        "be a perfectionist^anger quickly^have high expectations of yourself^are sensitive to criticism^feel guilt/fear/worry easily",
     },
     {
       type: "body",

@@ -26,7 +26,7 @@ export const page12 = contentBody([
     {
       type: "bullet",
       content:
-        "feel a lot of pressure to be perfect^^want people to like you^^try to be very helpful to people^^take care of others^^worry about your friends and family",
+        "feel a lot of pressure to be perfect^want people to like you^try to be very helpful to people^take care of others^worry about your friends and family",
     },
     {
       type: "body",

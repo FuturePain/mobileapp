@@ -26,7 +26,7 @@ export const page14 = contentBody([
     {
       type: "bullet",
       content:
-        "anger at losing your hair/your hair going gray^^anger that you're mortal and will die someday^^getting wrinkles^^gaining weight as you age",
+        "anger at losing your hair/your hair going gray^anger that you're mortal and will die someday^getting wrinkles^gaining weight as you age",
     },
     {
       type: "body",
