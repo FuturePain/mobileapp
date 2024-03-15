@@ -19,7 +19,8 @@ import DynamicHeader from "./DynamicHeader";
 import { useRoute } from "@react-navigation/native";
 import MoveOnButton from "./MoveOnButton";
 import { incrementAndReturnIndex } from "./frameworks/constants";
-import { translateIndex } from "./HomeScreen";
+import * as Speech from "expo-speech";
+import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Content({ navigation, pageNumber = 0 }) {
   const route = useRoute();
@@ -40,7 +41,31 @@ export default function Content({ navigation, pageNumber = 0 }) {
     setValueOfHeight(positionY);
     setTotalHeight(event.nativeEvent.contentSize.height - 830);
   };
+  const [speechToSay, setSpeechToStay] = useState([]);
+  const [paused, setPaused] = useState(true);
+  const [firstTime, setFirstTime] = useState(true);
   const scrollViewRef = useRef(null);
+  useEffect(() => {
+    for (let i = 0; i < pageContent.listOfBody.length; i++) {
+      if (
+        pageContent.listOfBody[i].type == "heading" ||
+        pageContent.listOfBody[i].type == "subheading"
+      ) {
+        setSpeechToStay((e) => [...e, pageContent.listOfBody[i].content]);
+      } else if (pageContent.listOfBody[i].type == "image") {
+        setSpeechToStay((e) => [
+          ...e,
+          "At this point in the page, there is an image.",
+        ]);
+      } else {
+        let newStr = pageContent.listOfBody[i].content
+          .replaceAll("*", " ")
+          .replaceAll("^", " ")
+          .replaceAll("*", " ");
+        setSpeechToStay((e) => [...e, newStr]);
+      }
+    }
+  }, []);
   return (
     <>
       <SafeAreaView style={{ backgroundColor: "white" }}>
@@ -71,6 +96,56 @@ export default function Content({ navigation, pageNumber = 0 }) {
           >
             {pageContent.pageTitle}
           </Text>
+          <View
+            style={{
+              justifyContent: "center",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            {firstTime ? (
+              <MaterialIcons
+                name="play-circle-filled"
+                onPress={() => {
+                  setFirstTime(false);
+                  setPaused(false);
+                  for (let i = 0; i < speechToSay.length; i++) {
+                    Speech.speak(speechToSay[i], {
+                      rate: 0.77,
+                      pitch: 1.2,
+                      voice: "com.apple.ttsbundle.Samantha-premium",
+                    });
+                  }
+                }}
+                size={50}
+                color="black"
+              />
+            ) : (
+              <>
+                {paused ? (
+                  <MaterialCommunityIcons
+                    name="play-circle-outline"
+                    onPress={() => {
+                      setPaused(false);
+                      Speech.resume();
+                    }}
+                    size={50}
+                    color="black"
+                  />
+                ) : (
+                  <MaterialCommunityIcons
+                    name="pause-circle-outline"
+                    onPress={() => {
+                      setPaused(true);
+                      Speech.pause();
+                    }}
+                    size={50}
+                    color="black"
+                  />
+                )}
+              </>
+            )}
+          </View>
           {pageContent.listOfBody.map((element) => {
             switch (element.type) {
               case "heading": {
