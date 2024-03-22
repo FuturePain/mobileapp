@@ -15,7 +15,7 @@ export const page20 = contentBody([
   [
     {
       type: "subheading",
-      content: "I. Before we begin...",
+      content: "1. Before we begin...",
     },
     {
       type: "body",
@@ -23,7 +23,7 @@ export const page20 = contentBody([
     },
     {
       type: "subheading",
-      content: "II. Let's begin!",
+      content: "2. Let's begin!",
     },
     {
       type: "bullet",
@@ -41,7 +41,7 @@ export const page20 = contentBody([
     },
     {
       type: "subheading",
-      content: "III. Reminder",
+      content: "3. Reminder",
     },
     {
       type: "body",

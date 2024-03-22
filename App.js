@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, LogBox } from "react-native";
+import { StyleSheet, LogBox, Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
@@ -11,12 +11,15 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import Module from "./components/Module";
+import { Audio } from "expo-av";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
-  LogBox.ignoreLogs(["Warning: ..."]); // Ignore log notification by message
-  LogBox.ignoreAllLogs(); //Ignore all log notifications
+  LogBox.ignoreLogs(["Warning: ..."]);
+  LogBox.ignoreAllLogs();
+  if (Platform.OS === "ios")
+    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   const [isSignedIn, setSignedStatus] = useState(false);
   async function fetch() {
     userData = await SecureStore.getItemAsync("userData");

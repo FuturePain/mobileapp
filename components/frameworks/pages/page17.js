@@ -15,7 +15,7 @@ export const page17 = contentBody([
   [
     {
       type: "subheading",
-      content: "I. Reflecting on MBS",
+      content: "1. Reflecting on MBS",
     },
     {
       type: "body",
@@ -27,7 +27,7 @@ export const page17 = contentBody([
     },
     {
       type: "subheading",
-      content: "II. Thinking about your list",
+      content: "2. Thinking about your list",
     },
     {
       type: "body",
@@ -35,7 +35,7 @@ export const page17 = contentBody([
     },
     {
       type: "subheading",
-      content: "III. The exercise",
+      content: "3. The exercise",
     },
     {
       type: "body",

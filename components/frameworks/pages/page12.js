@@ -11,14 +11,14 @@ const contentBody = (items) => {
   return result;
 };
 export const page12 = contentBody([
-  "III. Pleasing People",
+  "3. Pleasing People",
   [
     {
       type: "body",
       content:
         "*#Preparation:*^^Get comfortable in a place where you feel safe. Now, open your journal or online document to start writing. Make sure it's something that only you can access--your writing is for your eyes only!",
     },
-    { type: "heading", content: "III. Pleasing People" },
+    { type: "heading", content: "3. Pleasing People" },
     {
       type: "body",
       content: `Being a people pleaser, worrier, or having caretaker qualities*#can cause suppressed rage.*^^For instance, you may often:`,

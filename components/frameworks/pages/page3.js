@@ -13,7 +13,7 @@ const contentBody = (items) => {
 export const page3 = contentBody([
   "What is the Mind Body Syndrome?",
   [
-    { type: "heading", content: "I. Thanks again for being here!" },
+    { type: "heading", content: "1. Thanks again for being here!" },
     {
       type: "body",
       content:
@@ -21,7 +21,7 @@ export const page3 = contentBody([
     },
     {
       type: "heading",
-      content: "II. What is Mind Body Syndrome (MBS)?",
+      content: "2. What is Mind Body Syndrome (MBS)?",
     },
     {
       type: "subheading",

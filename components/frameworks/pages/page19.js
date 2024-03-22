@@ -19,7 +19,7 @@ export const page19 = contentBody([
     },
     {
       type: "subheading",
-      content: "I. Thanks for being here!",
+      content: "1. Thanks for being here!",
     },
     {
       type: "body",
@@ -37,7 +37,7 @@ export const page19 = contentBody([
     },
     {
       type: "subheading",
-      content: "II. What is mindfulness?",
+      content: "2. What is mindfulness?",
     },
     {
       type: "body",
@@ -50,7 +50,7 @@ export const page19 = contentBody([
     },
     {
       type: "subheading",
-      content: "III. Why should we be mindful?",
+      content: "3. Why should we be mindful?",
     },
     {
       type: "body",

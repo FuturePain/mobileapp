@@ -217,12 +217,16 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                 autoComplete="off"
                 placeholder="Type your answer here"
                 // value={answer}
-                onEndEditing={(a) => {
-                  // let tempAnswers = userAnswers.slice();
-                  // if (tempAnswers.length <= currentQuestion)
-                  //   tempAnswers.push(a.nativeEvent.text);
-                  // else tempAnswers[currentQuestion] = a.nativeEvent.text;
-                  // setUserAnswers(tempAnswers);
+                onChangeText={(a) => {
+                  // check empty text
+                  if (a == "") {
+                    setUserAnswers([]);
+                    return;
+                  }
+                  let tempAnswers = userAnswers.slice();
+                  if (tempAnswers.length == 0) tempAnswers.push(a);
+                  else tempAnswers[0] = a;
+                  setUserAnswers(tempAnswers);
                 }}
               />
             </View>
@@ -240,6 +244,10 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
           <AppButton
             title="Next question"
             style={{ fontWeight: "bold" }}
+            disabled={
+              [...new Set(userAnswers)].length == 0 &&
+              pageContent.quizQuestions[currentQuestion].type != "video"
+            }
             onPress={() => {
               if (pageContent.quizQuestions[currentQuestion].type == "video") {
                 setCurrentQuestion(currentQuestion + 1);

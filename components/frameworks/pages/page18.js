@@ -20,7 +20,7 @@ export const page18 = contentBody([
     },
     {
       type: "subheading",
-      content: "I. The Daily Reflection",
+      content: "1. The Daily Reflection",
     },
     {
       type: "body",
@@ -41,7 +41,7 @@ export const page18 = contentBody([
     },
     {
       type: "subheading",
-      content: "II. Affirmations",
+      content: "2. Affirmations",
     },
     {
       type: "body",

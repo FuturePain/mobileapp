@@ -13,7 +13,7 @@ const contentBody = (items) => {
 export const page2 = contentBody([
   "What is Pain?",
   [
-    { type: "heading", content: "I. Defining pain" },
+    { type: "heading", content: "1. Defining pain" },
     {
       type: "body",
       content: `According to the International Association for the Study of Pain, pain is*#"an unpleasant sensory and emotional experience associated with actual or potential damage, or described in terms of such damage".*If we break this down, this means that pain is partly an*#emotional experience*and doesn't have to result from physical problems.`,
@@ -24,7 +24,7 @@ export const page2 = contentBody([
     },
     {
       type: "heading",
-      content: "II. Types of pain",
+      content: "2. Types of pain",
     },
     {
       type: "body",

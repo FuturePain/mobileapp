@@ -24,7 +24,7 @@ export const page9 = contentBody([
     },
     {
       type: "subheading",
-      content: "I. How will a list help?",
+      content: "1. How will a list help?",
     },
     {
       type: "body",
@@ -33,7 +33,7 @@ export const page9 = contentBody([
     },
     {
       type: "subheading",
-      content: "II. What to write about",
+      content: "2. What to write about",
     },
     {
       type: "body",

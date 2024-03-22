@@ -11,14 +11,14 @@ const contentBody = (items) => {
   return result;
 };
 export const page10 = contentBody([
-  "I. Traits",
+  "1. Traits",
   [
     {
       type: "body",
       content:
         "*#Preparation:*^^Get comfortable in a place where you feel safe. Now, open your journal or online document to start writing. Make sure it's something that only you can access--your writing is for your eyes only!",
     },
-    { type: "heading", content: "I. Traits" },
+    { type: "heading", content: "1. Traits" },
     {
       type: "body",
       content: `Certain*#qualities*make you*#more likely*to have suppressed rage.^^For example, you might:`,

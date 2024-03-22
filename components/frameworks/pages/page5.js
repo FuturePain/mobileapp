@@ -13,7 +13,7 @@ const contentBody = (items) => {
 export const page5 = contentBody([
   "Research Studies",
   [
-    { type: "heading", content: "I. Stress and low back pain in America" },
+    { type: "heading", content: "1. Stress and low back pain in America" },
     {
       type: "body",
       content: `In a 2020 study, a team of UC Berkeley researchers saw a drop in stress, anxiety, and depression across America. After research and analysis, they found that the drop in stress caused a similar drop in low back pain.^The researchers found that within around a month of the drop in stress, 2.1 million people stopped having low back pain and 685,000 fewer people went to the doctor for low back pain.^So, less stress meant less chronic pain.`,
@@ -24,7 +24,7 @@ export const page5 = contentBody([
     },
     {
       type: "heading",
-      content: "II. Discrimination and chronic pain",
+      content: "2. Discrimination and chronic pain",
     },
     {
       type: "body",

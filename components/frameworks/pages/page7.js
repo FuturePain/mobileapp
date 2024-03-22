@@ -13,14 +13,14 @@ const contentBody = (items) => {
 export const page7 = contentBody([
   "Changing Pain",
   [
-    { type: "heading", content: "I. Change how you deal with stress" },
+    { type: "heading", content: "1. Change how you deal with stress" },
     {
       type: "body",
       content: `Your neurobiology can be changed*#without medicine or exercise.*You can do it by*#changing how you deal with and process stress.*In the FUTUREPAIN intervention, we will try our best to help you break down stress and provide research-backed strategies you can use to decrease your pain.`,
     },
     {
       type: "heading",
-      content: "II. Key ideas",
+      content: "2. Key ideas",
     },
     {
       type: "body",

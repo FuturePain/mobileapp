@@ -15,7 +15,7 @@ export const page1 = contentBody([
   "Understanding Your Chronic Pain",
   [
     { type: "image", content: "1-1.png" },
-    { type: "heading", content: "I. The good news!" },
+    { type: "heading", content: "1. The good news!" },
     {
       type: "body",
       content:
@@ -23,7 +23,7 @@ export const page1 = contentBody([
     },
     {
       type: "heading",
-      content: "II. Testimonials",
+      content: "2. Testimonials",
     },
     {
       type: "body",

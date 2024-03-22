@@ -13,7 +13,7 @@ const contentBody = (items) => {
 export const page4 = contentBody([
   "The Stress and Pain Connection",
   [
-    { type: "heading", content: "I. How does stress cause pain?" },
+    { type: "heading", content: "1. How does stress cause pain?" },
     {
       type: "body",
       content: `You might be wondering what the connection between stress and pain is. Well, the answer is simple!^Mental stress and physical injuries actually activate similar regions in the brain. As people live their lives, stressful experiences can*#cause their brain to change in a way that results in physical chronic pain.*`,
@@ -29,7 +29,7 @@ export const page4 = contentBody([
     },
     {
       type: "heading",
-      content: "II. Our brain's response",
+      content: "2. Our brain's response",
     },
     {
       type: "body",

@@ -7,6 +7,7 @@ import {
   Image,
   ScrollView,
   Animated,
+  TouchableOpacity,
 } from "react-native";
 import pages, {
   parseNewElement,
@@ -104,8 +105,8 @@ export default function Content({ navigation, pageNumber = 0 }) {
             }}
           >
             {firstTime ? (
-              <MaterialIcons
-                name="play-circle-filled"
+              <TouchableOpacity
+                style={{ flexDirection: "row", alignItems: "center" }}
                 onPress={() => {
                   setFirstTime(false);
                   setPaused(false);
@@ -117,31 +118,76 @@ export default function Content({ navigation, pageNumber = 0 }) {
                     });
                   }
                 }}
-                size={50}
-                color="black"
-              />
+              >
+                <MaterialIcons
+                  name="play-circle-filled"
+                  size={50}
+                  color="#3f72ff"
+                />
+                <Text
+                  style={{
+                    fontSize: 20,
+                    color: "#3f72ff",
+                    fontWeight: "800",
+                    margin: 10,
+                  }}
+                >
+                  Hear this page
+                </Text>
+              </TouchableOpacity>
             ) : (
               <>
                 {paused ? (
-                  <MaterialCommunityIcons
-                    name="play-circle-outline"
+                  <TouchableOpacity
+                    style={{
+                      flexDirection: "row",
+                      alignItems: "center",
+                    }}
                     onPress={() => {
                       setPaused(false);
                       Speech.resume();
                     }}
-                    size={50}
-                    color="black"
-                  />
+                  >
+                    <MaterialCommunityIcons
+                      name="play-circle-outline"
+                      size={50}
+                      color="green"
+                    />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: "green",
+                        fontWeight: "800",
+                        margin: 10,
+                      }}
+                    >
+                      Resume hearing
+                    </Text>
+                  </TouchableOpacity>
                 ) : (
-                  <MaterialCommunityIcons
-                    name="pause-circle-outline"
+                  <TouchableOpacity
+                    style={{ flexDirection: "row", alignItems: "center" }}
                     onPress={() => {
                       setPaused(true);
                       Speech.pause();
                     }}
-                    size={50}
-                    color="black"
-                  />
+                  >
+                    <MaterialCommunityIcons
+                      name="pause-circle-outline"
+                      size={50}
+                      color="red"
+                    />
+                    <Text
+                      style={{
+                        fontSize: 20,
+                        color: "red",
+                        fontWeight: "800",
+                        margin: 10,
+                      }}
+                    >
+                      Pause hearing
+                    </Text>
+                  </TouchableOpacity>
                 )}
               </>
             )}

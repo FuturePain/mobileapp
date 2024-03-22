@@ -26,7 +26,7 @@ const quizBody = (items) => {
 
 export const quiz4 = quizBody([
   "Predictive Coding: Why the Mind Creates Chronic Pain",
-  "I. Nice work!\n\nGreat job making it this far through the module. Hopefully, you found the content about the Mind Body Syndrome interesting and learned something new!\n\nNow that you understand a bit about the Mind Body Syndrome, let's explore how and why the mind creates pain to keep you safe. This is called predictive coding.\n\nII. Please watch this short video explaining predictive coding.\n\nOnce you finish watching it, please submit a sentence summarizing one thing you learned or found interesting.\n\n",
+  "1. Nice work!\n\nGreat job making it this far through the module. Hopefully, you found the content about the Mind Body Syndrome interesting and learned something new!\n\nNow that you understand a bit about the Mind Body Syndrome, let's explore how and why the mind creates pain to keep you safe. This is called predictive coding.\n\n2. Please watch this short video explaining predictive coding.\n\nOnce you finish watching it, please submit a sentence summarizing one thing you learned or found interesting.\n\n",
   [
     {
       type: "video",
