@@ -18,7 +18,7 @@ import { useEffect, useRef, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import DynamicHeader from "./DynamicHeader";
 import { useRoute } from "@react-navigation/native";
-import MoveOnButton from "./MoveOnButton";
+import MoveOnButton from "./ButtonStyles/MoveOnButton";
 import { incrementAndReturnIndex } from "./frameworks/constants";
 import * as Speech from "expo-speech";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";

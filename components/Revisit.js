@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   FlatList,
   ScrollView,
+  Alert,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import Collapsible from "react-native-collapsible";
@@ -43,7 +44,7 @@ const generateTitle = (idx) => {
   }
 };
 
-export default function HomeScreen({ navigation }) {
+export default function Revisit({ navigation }) {
   const route = useRoute();
   const [userData, setUserData] = useState(route.params?.userData);
   const [contentIndex, setIndex] = useState(0);
@@ -95,32 +96,14 @@ export default function HomeScreen({ navigation }) {
             contentContainerStyle={styles.container}
             contentInsetAdjustmentBehavior="automatic"
           >
-            <Text style={styles.hiName}>
-              Welcome back{" "}
-              <Text style={{ fontWeight: "700" }}>
-                {userData[userData.length - 2]}
-              </Text>
-              !{" "}
-            </Text>
-            <Text style={[styles.hiName, { fontSize: 15, paddingTop: -20 }]}>
-              The study closes in ___ days.
-            </Text>
             <View style={{ alignItems: "center", width: "100%" }}>
-              <Text style={[styles.hiText, { fontSize: 25 }]}>
-                {contentIndex} / {modules.length} activities completed
+              <Text style={[styles.hiName, { fontWeight: 800 }]}>
+                Revisit a previous module
               </Text>
               {modules.map((mod, idx) => {
-                if (idx - contentIndex == -1) {
+                if (idx - contentIndex < 0) {
                   return (
                     <>
-                      <Text
-                        style={[
-                          styles.hiText,
-                          { marginLeft: 10, textAlign: "center" },
-                        ]}
-                      >
-                        Just finished:{" "}
-                      </Text>
                       <View
                         flexDirection="row"
                         style={{
@@ -139,61 +122,27 @@ export default function HomeScreen({ navigation }) {
                           {idx + 1}
                         </Text>
                         <AppCard
-                          red={true}
-                          title={
-                            idx - contentIndex < 0
-                              ? generateTitle(idx) + " ✅"
-                              : generateTitle(idx)
-                          }
+                          title={generateTitle(idx)}
                           completed={idx < contentIndex}
                           onPress={() => {
-                            navigation.navigate("Lesson");
+                            const { type, num } = translateIndex(idx);
+                            if (type == "p") {
+                              navigation.navigate("Lesson", {
+                                pageNumber: num + 1,
+                              });
+                            } else if (type == "q") {
+                              navigation.navigate("Quiz", {
+                                pageNumber: num + 1,
+                              });
+                            } else {
+                              navigation.navigate("Module", {
+                                pageNumber: num + 1,
+                              });
+                            }
                           }}
-                          disabled
                         />
                       </View>
-                      <Text
-                        style={[
-                          styles.hiText,
-                          { textAlign: "center", marginLeft: 10 },
-                        ]}
-                      >
-                        Coming up:{" "}
-                      </Text>
                     </>
-                  );
-                } else if (idx - contentIndex > -1 && idx - contentIndex < 3) {
-                  return (
-                    <View
-                      flexDirection="row"
-                      style={{
-                        justifyContent: "center",
-                        alignContent: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          height: "100%",
-                          textAlign: "center",
-                          fontWeight: "600",
-                          marginRight: 10,
-                        }}
-                      >
-                        {idx + 1}
-                      </Text>
-                      <AppCardOutline
-                        title={
-                          idx - contentIndex < 0
-                            ? generateTitle(idx) + " ✅"
-                            : generateTitle(idx)
-                        }
-                        completed={idx < contentIndex}
-                        onPress={() => {
-                          navigation.navigate("Lesson");
-                        }}
-                        disabled
-                      />
-                    </View>
                   );
                 }
               })}
@@ -209,24 +158,9 @@ export default function HomeScreen({ navigation }) {
             }}
           >
             <AppButtonOutline
-              title="Revisit a previous module"
+              title="Back"
               onPress={() => {
-                navigation.navigate("Revisit previous module");
-              }}
-            />
-            <AppButton
-              title="Begin next module"
-              onPress={() => {
-                const { type, num } = translateIndex(contentIndex);
-                if (type == "p") {
-                  navigation.navigate("Lesson", { pageNumber: num + 1 });
-                } else if (type == "q") {
-                  navigation.navigate("Quiz", { pageNumber: num + 1 });
-                } else {
-                  navigation.navigate("Module", {
-                    pageNumber: num + 1,
-                  });
-                }
+                navigation.navigate("FUTUREPAIN");
               }}
             />
           </View>

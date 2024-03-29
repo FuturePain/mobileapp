@@ -76,7 +76,7 @@ export const page19 = contentBody([
     {
       type: "body",
       content:
-        "Before we begin, please find a safe and quiet space to meditate. Then, find a comfortable position to take while participating in the following exercises.^^Make sure to take note of how you are feeling on both a physical and emotional level before and after each meditation practice. Whatever is going through your mind at the moment, take a minute to jot it down.^^Select the*#next*button to start the Body Scan Mindfulness exercise.",
+        "Before we begin, please find a safe and quiet space to meditate. Then, find a comfortable position to take while participating in the following exercises.^^Make sure to take note of how you are feeling on both a physical and emotional level before and after each meditation practice. Whatever is going through your mind at the moment, take a minute to jot it down.^^Ready to start the Body Scan Mindfulness exercise?",
     },
   ],
 ]);

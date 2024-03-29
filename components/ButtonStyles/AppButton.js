@@ -4,8 +4,7 @@ const AppButton = ({ onPress, title, disabled }) => (
   <TouchableOpacity
     activeOpacity={0.7}
     onPress={onPress}
-    style={!disabled ? styles.appButtonContainer : styles.appButtonContainer1}
-    disabled={disabled}
+    style={styles.appButtonContainer}
   >
     <Text style={styles.appButtonText}>{title}</Text>
   </TouchableOpacity>
@@ -25,7 +24,8 @@ const styles = StyleSheet.create({
   },
   appButtonContainer1: {
     elevation: 8,
-    backgroundColor: "gray",
+    backgroundColor: "#7f82e1",
+    borderWidth: 5,
     borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 12,

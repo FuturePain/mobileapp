@@ -36,10 +36,11 @@ export const quiz9 = quizBody([
   [
     [
       "It brings suppressed anger to light.",
-      "It helps you foucs on the true cause of your pain.",
+      "It helps you focus on the true cause of your pain.",
       "All of the above",
     ],
   ],
+  ["Try again!"],
   [[2]],
   [],
 ]);

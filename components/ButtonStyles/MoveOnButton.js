@@ -1,6 +1,6 @@
 import { Button } from "react-native";
-import { translateIndex } from "./HomeScreen";
-import { incrementAndReturnIndex } from "./frameworks/constants";
+import { translateIndex } from "../HomeScreen";
+import { incrementAndReturnIndex } from "../frameworks/constants";
 // To be shared across Content and Module components
 
 export default MoveOnButton = ({ navigation }) => {

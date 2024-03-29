@@ -11,15 +11,15 @@ import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useState } from "react";
 import * as SecureStore from "expo-secure-store";
 import Module from "./components/Module";
-import { Audio } from "expo-av";
+import Revisit from "./components/Revisit";
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   LogBox.ignoreLogs(["Warning: ..."]);
   LogBox.ignoreAllLogs();
-  if (Platform.OS === "ios")
-    Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
+  // if (Platform.OS === "ios")
+  //   Audio.setAudioModeAsync({ playsInSilentModeIOS: true });
   const [isSignedIn, setSignedStatus] = useState(false);
   async function fetch() {
     userData = await SecureStore.getItemAsync("userData");
@@ -38,7 +38,7 @@ export default function App() {
             <Stack.Screen
               name="Login"
               component={Login}
-              options={{ headerShown: false }}
+              options={{ headerShown: false, animation: "none" }}
             />
           ) : (
             <></>
@@ -55,6 +55,7 @@ export default function App() {
               headerTitleStyle: {
                 color: "white",
               },
+              animation: "fade",
             }}
           />
           <Stack.Screen
@@ -84,6 +85,15 @@ export default function App() {
               headerShown: false,
               gestureEnabled: false,
               animation: "slide_from_bottom",
+            }}
+          />
+          <Stack.Screen
+            name="Revisit previous module"
+            component={Revisit}
+            options={{
+              headerShown: false,
+              gestureEnabled: false,
+              animation: "fade",
             }}
           />
         </Stack.Navigator>

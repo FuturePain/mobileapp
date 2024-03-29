@@ -11,9 +11,10 @@ import {
   KeyboardAvoidingView,
   ScrollView,
 } from "react-native";
-import AppButton from "./AppButton";
+import AppButton from "./ButtonStyles/AppButton";
 import InteractiveTextInput from "react-native-text-input-interactive";
 import * as SecureStore from "expo-secure-store";
+import Spinner from "react-native-loading-spinner-overlay";
 
 //replace with Brown's values
 const qualtricsDomain = "yul1.qualtrics.com";
@@ -124,72 +125,68 @@ export default function Login({ navigation }) {
         <Text style={styles.headerText}>
           Log in to <Text style={{ color: "#7f82e1" }}>FUTUREPAIN</Text>
         </Text>
-        {isLoading ? (
-          <Text style={styles.headerText}>Logging you in, please wait...</Text>
-        ) : (
-          <>
-            <InteractiveTextInput
-              autoCapitalize="none"
-              autoCorrect={false}
-              autoComplete="off"
-              placeholder="Email address"
-              value={emailValue}
-              onChangeText={handleInputChange}
-            />
-            <View style={{ height: 15, width: "100%" }} />
-            {/* <InteractiveTextInput placeholder="Password" secureTextEntry={true} /> */}
-            <View style={{ height: 15, width: "100%" }} />
-            <AppButton
-              disabled={
-                !String(emailValue)
-                  .toLowerCase()
-                  .match(
-                    /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-                  )
-              }
-              onPress={async () => {
-                setIsLoading(true);
-                const downloadedData = await exportSurveyResponses();
+        <InteractiveTextInput
+          autoCapitalize="none"
+          autoCorrect={false}
+          autoComplete="off"
+          placeholder="Email address"
+          value={emailValue}
+          onChangeText={handleInputChange}
+        />
+        <View style={{ height: 15, width: "100%" }} />
+        {/* <InteractiveTextInput placeholder="Password" secureTextEntry={true} /> */}
+        <View style={{ height: 15, width: "100%" }} />
+        <AppButton
+          disabled={
+            !String(emailValue)
+              .toLowerCase()
+              .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+              )
+          }
+          onPress={async () => {
+            setIsLoading(true);
+            const downloadedData = await exportSurveyResponses();
 
-                //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
-                const emailAddresses = downloadedData.responses.map(
-                  (response) => response.values.QID1_TEXT
-                );
-                const email = emailValue.toLowerCase().trim();
+            //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
+            const emailAddresses = downloadedData.responses.map(
+              (response) => response.values.QID1_TEXT
+            );
+            const email = emailValue.toLowerCase().trim();
 
-                if (emailAddresses.includes(email)) {
-                  const userData = getValuesArrayByEmail(downloadedData, email);
-                  navigation.replace("FUTUREPAIN", { userData: userData });
-                  await SecureStore.setItemAsync(
-                    "userData",
-                    JSON.stringify(userData)
-                  );
-                  await SecureStore.setItemAsync("userProgress", "0");
-                } else {
-                  Alert.alert(
-                    "Username not found",
-                    "The entered username is not valid",
-                    [],
-                    { cancelable: false }
-                  );
-                }
-                setIsLoading(false);
-              }}
-              title="Login"
-            />
-            <TouchableOpacity
-              onPress={() => {
-                Linking.openURL(
-                  "https://berkeley.qualtrics.com/jfe/form/SV_bHO8xELxQ0ddZ66"
-                );
-              }}
-            >
-              <Text style={styles.registerText}>
-                Register for the study here
-              </Text>
-            </TouchableOpacity>
-          </>
-        )}
+            if (emailAddresses.includes(email)) {
+              const userData = getValuesArrayByEmail(downloadedData, email);
+              navigation.replace("FUTUREPAIN", { userData: userData });
+              await SecureStore.setItemAsync(
+                "userData",
+                JSON.stringify(userData)
+              );
+              await SecureStore.setItemAsync("userProgress", "0");
+            } else {
+              Alert.alert(
+                "Username not found",
+                "The entered username is not valid",
+                [],
+                { cancelable: false }
+              );
+            }
+            setIsLoading(false);
+          }}
+          title="Login"
+        />
+        <AppButton
+          title="Register"
+          onPress={() => {
+            Linking.openURL(
+              "https://berkeley.qualtrics.com/jfe/form/SV_bHO8xELxQ0ddZ66"
+            );
+          }}
+        />
+        <Spinner
+          visible={isLoading}
+          textContent={"Logging you in, please wait..."}
+          textStyle={{ color: "#FFF" }}
+        />
       </ScrollView>
     </KeyboardAvoidingView>
   );

@@ -16,7 +16,7 @@ import {
 import quizzes, { VideoPlayer } from "./frameworks/QuizBody";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useEffect, useRef, useState } from "react";
-import AppButton from "./AppButton";
+import AppButton from "./ButtonStyles/AppButton";
 import { useRoute } from "@react-navigation/native";
 import { incrementAndReturnIndex } from "./frameworks/constants";
 import { Video, ResizeMode } from "expo-av";

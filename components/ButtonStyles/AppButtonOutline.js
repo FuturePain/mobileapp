@@ -1,23 +1,21 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
-const AppCard = ({ onPress, title, completed, disabled }) => (
+const AppButtonOutline = ({ onPress, title, disabled }) => (
   <TouchableOpacity
     activeOpacity={0.7}
-    style={completed ? styles.appButtonContainer : styles.appButtonContainer1}
     onPress={onPress}
-    disabled={disabled}
+    style={styles.appButtonContainer}
   >
-    <Text style={completed ? styles.appButtonText : styles.appButtonText1}>
-      {title}
-    </Text>
+    <Text style={styles.appButtonText}>{title}</Text>
   </TouchableOpacity>
 );
 
 const styles = StyleSheet.create({
   appButtonContainer: {
     elevation: 8,
-    backgroundColor: "green",
-    borderRadius: 5,
+    borderWidth: 5,
+    borderColor: "#7f82e1",
+    borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
@@ -27,8 +25,8 @@ const styles = StyleSheet.create({
   },
   appButtonContainer1: {
     elevation: 8,
-    backgroundColor: "red",
-    borderRadius: 5,
+    backgroundColor: "gray",
+    borderRadius: 15,
     paddingVertical: 10,
     paddingHorizontal: 12,
     marginBottom: 10,
@@ -38,16 +36,10 @@ const styles = StyleSheet.create({
   },
   appButtonText: {
     fontSize: 18,
-    color: "white",
-    fontWeight: "bold",
-    alignSelf: "center",
-  },
-  appButtonText1: {
-    fontSize: 18,
-    color: "white",
+    color: "#7f82e1",
     fontWeight: "bold",
     alignSelf: "center",
   },
 });
 
-export default AppCard;
+export default AppButtonOutline;
