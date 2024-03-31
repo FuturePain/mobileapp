@@ -110,6 +110,7 @@ export default function Revisit({ navigation }) {
                           justifyContent: "center",
                           alignContent: "center",
                         }}
+                        key={idx}
                       >
                         <Text
                           style={{
@@ -129,14 +130,17 @@ export default function Revisit({ navigation }) {
                             if (type == "p") {
                               navigation.navigate("Lesson", {
                                 pageNumber: num + 1,
+                                revisit: true,
                               });
                             } else if (type == "q") {
                               navigation.navigate("Quiz", {
                                 pageNumber: num + 1,
+                                revisit: true,
                               });
                             } else {
                               navigation.navigate("Module", {
                                 pageNumber: num + 1,
+                                revisit: true,
                               });
                             }
                           }}

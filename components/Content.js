@@ -23,9 +23,14 @@ import { incrementAndReturnIndex } from "./frameworks/constants";
 import * as Speech from "expo-speech";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
-export default function Content({ navigation, pageNumber = 0 }) {
+export default function Content({
+  navigation,
+  pageNumber = 0,
+  revisit = false,
+}) {
   const route = useRoute();
-  if (route.params) pageNumber = route.params?.pageNumber;
+  if (route.params)
+    (pageNumber = route.params?.pageNumber), (revisit = route.params?.revisit);
   const pageContent = pages[pageNumber - 1];
   let wordCount = pageContent.pageTitle.split(" ").length;
   for (let i = 0; i < pageContent.listOfBody.length; i++) {
@@ -361,7 +366,9 @@ export default function Content({ navigation, pageNumber = 0 }) {
             <Button
               title="Done!"
               onPress={async () => {
-                await incrementAndReturnIndex();
+                if (!revisit) {
+                  await incrementAndReturnIndex();
+                }
                 navigation.navigate("FUTUREPAIN");
               }}
             />

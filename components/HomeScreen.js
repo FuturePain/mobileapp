@@ -59,7 +59,6 @@ export default function HomeScreen({ navigation }) {
           navigation.navigate("Login");
         }
       };
-
       fetchUser();
 
       return () => {};
@@ -112,7 +111,7 @@ export default function HomeScreen({ navigation }) {
               {modules.map((mod, idx) => {
                 if (idx - contentIndex == -1) {
                   return (
-                    <>
+                    <View key={idx}>
                       <Text
                         style={[
                           styles.hiText,
@@ -146,9 +145,6 @@ export default function HomeScreen({ navigation }) {
                               : generateTitle(idx)
                           }
                           completed={idx < contentIndex}
-                          onPress={() => {
-                            navigation.navigate("Lesson");
-                          }}
                           disabled
                         />
                       </View>
@@ -160,7 +156,7 @@ export default function HomeScreen({ navigation }) {
                       >
                         Coming up:{" "}
                       </Text>
-                    </>
+                    </View>
                   );
                 } else if (idx - contentIndex > -1 && idx - contentIndex < 3) {
                   return (
@@ -170,6 +166,7 @@ export default function HomeScreen({ navigation }) {
                         justifyContent: "center",
                         alignContent: "center",
                       }}
+                      key={idx}
                     >
                       <Text
                         style={{
@@ -188,15 +185,19 @@ export default function HomeScreen({ navigation }) {
                             : generateTitle(idx)
                         }
                         completed={idx < contentIndex}
-                        onPress={() => {
-                          navigation.navigate("Lesson");
-                        }}
                         disabled
                       />
                     </View>
                   );
                 }
               })}
+              {contentIndex == modules.length ? (
+                <Text style={styles.hiText}>
+                  Congratulations! You're all done!
+                </Text>
+              ) : (
+                <></>
+              )}
             </View>
             <StatusBar style="auto" />
           </ScrollView>
@@ -214,21 +215,25 @@ export default function HomeScreen({ navigation }) {
                 navigation.navigate("Revisit previous module");
               }}
             />
-            <AppButton
-              title="Begin next module"
-              onPress={() => {
-                const { type, num } = translateIndex(contentIndex);
-                if (type == "p") {
-                  navigation.navigate("Lesson", { pageNumber: num + 1 });
-                } else if (type == "q") {
-                  navigation.navigate("Quiz", { pageNumber: num + 1 });
-                } else {
-                  navigation.navigate("Module", {
-                    pageNumber: num + 1,
-                  });
-                }
-              }}
-            />
+            {contentIndex == modules.length ? (
+              <></>
+            ) : (
+              <AppButton
+                title="Begin next module"
+                onPress={() => {
+                  const { type, num } = translateIndex(contentIndex);
+                  if (type == "p") {
+                    navigation.navigate("Lesson", { pageNumber: num + 1 });
+                  } else if (type == "q") {
+                    navigation.navigate("Quiz", { pageNumber: num + 1 });
+                  } else {
+                    navigation.navigate("Module", {
+                      pageNumber: num + 1,
+                    });
+                  }
+                }}
+              />
+            )}
           </View>
         </SafeAreaView>
       ) : (

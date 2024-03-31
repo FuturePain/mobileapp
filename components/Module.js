@@ -20,9 +20,14 @@ import { useRoute } from "@react-navigation/native";
 import MoveOnButton from "./ButtonStyles/MoveOnButton";
 import { incrementAndReturnIndex, moduleTitles } from "./frameworks/constants";
 
-export default function Module({ navigation, pageNumber = 0 }) {
+export default function Module({
+  navigation,
+  pageNumber = 0,
+  revisit = false,
+}) {
   const route = useRoute();
-  if (route.params) pageNumber = route.params?.pageNumber;
+  if (route.params)
+    (pageNumber = route.params?.pageNumber), (revisit = route.params?.revisit);
   const modTitle = moduleTitles[pageNumber - 1];
   return (
     <>
@@ -77,7 +82,9 @@ export default function Module({ navigation, pageNumber = 0 }) {
           <Button
             title="Continue"
             onPress={async () => {
-              await incrementAndReturnIndex();
+              if (!revisit) {
+                await incrementAndReturnIndex();
+              }
               navigation.navigate("FUTUREPAIN");
             }}
           />

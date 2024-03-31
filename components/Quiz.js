@@ -22,9 +22,10 @@ import { incrementAndReturnIndex } from "./frameworks/constants";
 import { Video, ResizeMode } from "expo-av";
 import InteractiveTextInput from "react-native-text-input-interactive";
 
-export default function Quiz({ navigation, pageNumber = 0 }) {
+export default function Quiz({ navigation, pageNumber = 0, revisit = false }) {
   const route = useRoute();
-  if (route.params) pageNumber = route.params?.pageNumber;
+  if (route.params)
+    (pageNumber = route.params?.pageNumber), (revisit = route.params?.revisit);
   const pageContent = quizzes[pageNumber - 1];
   const [userAnswers, setUserAnswers] = useState([]);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -55,9 +56,9 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
           ) : (
             <></>
           )}
-          {pageContent.links.map((link) => {
+          {pageContent.links.map((link, idx) => {
             return (
-              <>
+              <View key={idx}>
                 <Text style={{ fontWeight: "bold" }}>{link[1]}</Text>
                 <Text
                   style={{ paddingBottom: 10, color: "blue" }}
@@ -67,7 +68,7 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                 >
                   {link[0]}
                 </Text>
-              </>
+              </View>
             );
           })}
           {pageContent.quizQuestions[currentQuestion].type == "multiple" ? (
@@ -91,6 +92,7 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                             : "#7f7f7f",
                         },
                       ]}
+                      key={index}
                       onPress={() => {
                         if (userAnswers.includes(index)) {
                           setUserAnswers(
@@ -127,6 +129,7 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                           setUserAnswers([...userAnswers, index]);
                         }
                       }}
+                      key={index}
                     >
                       <Text style={styles.text}>{choice}</Text>
                     </Pressable>
@@ -151,6 +154,7 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                           setUserAnswers([...userAnswers, index]);
                         }
                       }}
+                      key={index}
                     >
                       <Text style={styles.text}>{choice}</Text>
                     </Pressable>
@@ -278,7 +282,9 @@ export default function Quiz({ navigation, pageNumber = 0 }) {
                             currentQuestion ==
                             pageContent.quizQuestions.length - 1
                           ) {
-                            await incrementAndReturnIndex();
+                            if (!revisit) {
+                              await incrementAndReturnIndex();
+                            }
                             navigation.navigate("FUTUREPAIN");
                           } else {
                             setCurrentQuestion(currentQuestion + 1);

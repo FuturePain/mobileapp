@@ -52,7 +52,11 @@ export const quiz10 = quizBody([
     ],
     ["Yes", "No"],
   ],
-  ["Mindfulness can be done in a variety of settings and environments!", "We did all these exercises today!", "Please indicate 'yes.'"]
+  [
+    "Mindfulness can be done in a variety of settings and environments!",
+    "We did all these exercises today!",
+    "Please indicate 'yes.'",
+  ],
   [[0], [0, 1, 2], [0]],
   [],
 ]);
