@@ -1,55 +1,46 @@
 import React, { useState } from 'react';
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from "react-native";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Collapsible from 'react-native-collapsible';
+import { getDoc, doc} from "firebase/firestore";
 import { useRoute } from '@react-navigation/native';
+import { db } from './firebase';
 
 export default function HomeScreen({ navigation }) {
-  const [collapsibleOpen, setCollapsibleOpen] = useState(true);
-
-  const data = [
-    { title: "Open login page (for debug purposes)", action: () => navigation.replace("Login") },
-    { title: "Open quiz page (debug)", action: () => navigation.navigate("Quiz") },
-    { title: "Open lesson page (debug)", action: () => navigation.navigate("Lesson") },
-  ];
+  const [docData, setDocData] = useState(false);
 
   const route = useRoute();
-  const userData = route.params?.userData;
+  const uid = route.params?.uid;
 
-  console.log(userData);
+  const getInfo = async () => {
+    let docSnap = await getDoc(doc(db, "users", uid));
+        
+    if (!docSnap.exists()){
+      throw new Error('Cannot Access tasks');
+    }
+  
+    setDocData(docSnap.data());
+  }
+
+  getInfo()
 
   return (
     <View style={styles.container}>
+      <Text style={styles.headerText}>Hello, {docData.firstname}!</Text>
+      <Text style={styles.subheader}>Your Pending Surveys:</Text>
 
-      <Text style={styles.hiName}>
-        Hello {userData[userData.length -2]}, {"\n"}Your text is: {userData[userData.length -1]}
-      </Text>
+      <FlatList
+        data={docData.tasks}
+        keyExtractor={(item, index) => index.toString()}
+        contentContainerStyle={{ paddingVertical: 10 }}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.taskButton} onPress={() => console.log("Pressed:", item)}>
+            <Text style={styles.taskText}>{item}</Text>
+          </TouchableOpacity>
+        )}
+      />
 
-      <TouchableOpacity 
-        style={styles.collapsibleHeader}
-        onPress={() => setCollapsibleOpen(!collapsibleOpen)}
-      >
-        <Text style={styles.headerText}>Module #1</Text>
-        <MaterialCommunityIcons 
-          name={collapsibleOpen ? 'arrow-up' : 'arrow-down'} 
-          size={24} 
-          color="#555" 
-        />
+      <TouchableOpacity style={styles.logoutButton} onPress={() => navigation.replace("Login")}>
+        <Text style={styles.logoutText}>Logout</Text>
       </TouchableOpacity>
-      <Collapsible collapsed={!collapsibleOpen}>
-        <FlatList
-          data={data}
-          renderItem={({ item }) => (
-            <TouchableOpacity style={styles.cardButton} onPress={item.action}>
-              <MaterialCommunityIcons name="file-document" size={24} color="#555" />
-              <Text style={styles.cardButtonText}>{item.title}</Text>
-            </TouchableOpacity>
-          )}
-          keyExtractor={(item, index) => index.toString()}
-        />
-      </Collapsible>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -57,45 +48,45 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "left",
-    paddingTop: "40%",
-  },
-  collapsibleHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    width: '100%',
-    height: '10%',
-    padding: 10,
-    backgroundColor: '#e0e0e0',
+    backgroundColor: "#f7f8fc",
+    paddingTop: "15%",
+    paddingHorizontal: "5%",
   },
   headerText: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: "#555",
+    fontSize: 24,
+    fontWeight: '600',
+    color: "#333",
+    marginBottom: 10,
   },
-  hiName: {
-    padding: 5,
-    paddingLeft: 10,
-    fontSize: 15,
-    fontWeight: 'bold',
-    color: "#555",
-  },
-  cardButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    padding: 10,
-    margin: 5,
-    backgroundColor: '#f0f0f0',
-    borderRadius: 5,
-    width: '100%',
-    alignSelf: 'left',
-  },
-  cardButtonText: {
-    marginLeft: 10,
+  subheader: {
     fontSize: 16,
-    color: "#555",
+    fontWeight: '500',
+    color: "#666",
+    marginBottom: 10,
+  },
+  taskButton: {
+    backgroundColor: "#8888e0",
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    marginBottom: 10,
+  },
+  taskText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "500",
+  },
+  logoutButton: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    padding: 10,
+    position: "absolute",
+    bottom: 20,
+    alignSelf: "center",
+    borderRadius: 6,
+  },
+  logoutText: {
+    fontWeight: "500",
+    color: "#333",
   },
 });
-

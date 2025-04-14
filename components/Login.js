@@ -1,223 +1,182 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useState } from 'react';
-import { View, StyleSheet, Text, TouchableOpacity, Image, Alert, Linking, KeyboardAvoidingView} from "react-native";
-import { Input, Button } from 'react-native-elements';
-
-
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-
-//replace with Brown's values
-const qualtricsDomain = 'yul1.qualtrics.com';
-const apiToken = '0VyxWL7gN9DPxvNUSgKzumW28qCLaQoLaaSnVg7g';
-const surveyId = 'SV_bHO8xELxQ0ddZ66';
-
-async function createExport(surveyId) {
-  const response = await fetch(`https://${qualtricsDomain}/API/v3/surveys/${surveyId}/export-responses`, {
-    method: 'POST',
-    headers: {
-      'X-API-TOKEN': apiToken,
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      format: 'json',
-      compress: 'false'
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! here status: ${response.status}`);
-  }
-
-  const json = await response.json();
-  return json.result.progressId; // Save this ID to check the export progress
-}
-
-async function checkExportProgress(progressId) {
-  let checkResponse = await fetch(`https://${qualtricsDomain}/API/v3/surveys/${surveyId}/export-responses/${progressId}`, {
-    method: 'GET',
-    headers: {
-      'X-API-TOKEN': apiToken
-    }
-  });
-
-  if (!checkResponse.ok) {
-    throw new Error(`HTTP error! here there status: ${checkResponse.status}`);
-  }
-
-  let jsonResponse = await checkResponse.json();
-
-  if (jsonResponse.result.status === 'complete') {
-    return jsonResponse.result.fileId; // Save this ID to download the responses
-  } else {
-    return checkExportProgress(progressId);
-  }
-}
-
-async function downloadResponses(fileId) {
-  const downloadResponse = await fetch(`https://${qualtricsDomain}/API/v3/surveys/${surveyId}/export-responses/${fileId}/file`, {
-    method: 'GET',
-    headers: {
-      'X-API-TOKEN': apiToken
-    }
-  });
-
-  if (!downloadResponse.ok) {
-    throw new Error(`HTTP error! status: ${downloadResponse.status}`);
-  } else{
-  }
-
-  let data = await downloadResponse.json();
-  return data;
-}
-
-function getValuesArrayByEmail(jsonResponse, email) {
-  const response = jsonResponse.responses.find(r => r.values.QID1_TEXT === email);
-  return response ? Object.values(response.values) : null; // Returns the values as an array if found, otherwise null
-}
-
-// Main function to run the export process
-async function exportSurveyResponses() {
-
-  const progressId = await createExport(surveyId);
-  const fileId = await checkExportProgress(progressId);
-  const downloadedData = await downloadResponses(fileId);
-
-  return downloadedData;
-}
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert} from 'react-native';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { getDoc, setDoc, doc} from "firebase/firestore";
+import { auth, db } from './firebase';
+import { Ionicons } from '@expo/vector-icons'; // or 'react-native-vector-icons/Ionicons'
 
 export default function Login({ navigation }) {
-  const [emailValue, setInputValue] = useState('');
-  const handleInputChange = (text) => {
-    setInputValue(text);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [username, setUsername] = useState('');
+
+  const [loginToggle, setToggle] = useState(true);
+
+  const finishCreation = async (uid) => {
+    try {
+      const docSnap = await getDoc(doc(db, "global", "SurveysTODO"));
+      
+      if (!docSnap.exists()){
+        throw new Error('Cannot Access tasks');
+      }
+
+      let docData = docSnap.data()
+
+      await setDoc(doc(db, "users", uid), {
+        firstname: username,
+        tasks: Object.keys(docData)
+      });
+
+      navigation.replace("HomeScreen", { uid: uid });
+    } catch (e) {
+      console.error("Error adding document: ", e);
+    }    
+  }
+  
+  const handleSignUp = async () => {
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+
+        finishCreation(user.uid)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert("Sign Up Error", `${errorCode}: ${errorMessage}`)
+      });
   };
+
+  const handleSignIn = async () => {
+    signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        navigation.replace("HomeScreen", { uid: user.uid });
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        Alert.alert("Sign In Error", `${errorCode}: ${errorMessage}`)
+      });
+  }
+
   return (
-    <KeyboardAvoidingView
-    style={styles.container}
-    behavior='position' 
-    keyboardVerticalOffset='-30'>
-
     <View style={styles.container}>
-
       <Image
         source={require('../assets/screenHeader.png')}
-        style={styles.imageHeader}
+        style={styles.image}
       />
-      <Text style={styles.headerText}>Login</Text>
+      <Text style={styles.title}>{loginToggle ? "Sign In" : "Sign Up"}</Text>
 
-      <Input
-        placeholder='Email ID'
-        value={emailValue}
-        onChangeText={handleInputChange}
-        inputContainerStyle={styles.inputField}
-        leftIcon={
-          <MaterialIcons
-            name='email'
-            size={24}
-            color='#7B7B7B'
+      {!loginToggle && (
+        <View style={styles.inputContainer}>
+          <Ionicons name="person-outline" size={20} color="#555" style={styles.icon} />
+          <TextInput
+            placeholder="First Name"
+            value={username}
+            onChangeText={setUsername}
+            style={styles.input}
+            autoCapitalize="none"
           />
-        }
-      />
-      <Input
-        placeholder='Password'
-        secureTextEntry={true}
-        inputContainerStyle={styles.inputField}
-        leftIcon={
-          <Ionicons
-            name='lock-closed'
-            size={24}
-            color='#7B7B7B'
-          />
-        }
-      />
-      <Button
-        title="Login"
-        buttonStyle={styles.loginButton}
-        onPress={async () => {
-          const downloadedData = await exportSurveyResponses();
+        </View>
+      )}
 
-          //Replace "QID1_TEXT" with the question ID corresponding to Brown's email question
-          const emailAddresses = downloadedData.responses.map(response => response.values.QID1_TEXT);
-          const email = emailValue.toLowerCase().trim();
+      <View style={styles.inputContainer}>
+        <Ionicons name="mail-outline" size={20} color="#555" style={styles.icon} />
+        <TextInput
+          placeholder="Email"
+          value={email}
+          onChangeText={setEmail}
+          style={styles.input}
+          autoCapitalize="none"
+        />
+      </View>
 
-          console.log(emailAddresses);
-          console.log(email);
-          
-          if(emailAddresses.includes(email)){
-            const userData = getValuesArrayByEmail(downloadedData, email);
-            
-            navigation.replace("FUTUREPAIN", { userData: userData });
-          }else{
-            Alert.alert(
-              "Username not found",
-              "The entered username is not valid",
-              [],
-              { cancelable: false }
-            );
-          }
-    
-          /*
-          navigation.replace(
-            "FUTUREPAIN",{
-            user: userData,
-          })
-          */
-        }}
-      />
-      <TouchableOpacity onPress={() => { 
-        Linking.openURL('https://berkeley.qualtrics.com/jfe/form/SV_bHO8xELxQ0ddZ66');
-        console.log('Register link pressed')
-        }}>
-        <Text style={styles.registerText}>Register for the study here</Text>
+      <View style={styles.inputContainer}>
+        <Ionicons name="lock-closed-outline" size={20} color="#555" style={styles.icon} />
+        <TextInput
+          placeholder="Password"
+          value={password}
+          onChangeText={setPassword}
+          style={styles.input}
+          secureTextEntry
+        />
+      </View>
+
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+
+      <TouchableOpacity style={styles.button} onPress={loginToggle ? handleSignIn : handleSignUp}>
+        <Text style={styles.buttonText}>{loginToggle ? "Sign In" : "Sign Up"}</Text>
       </TouchableOpacity>
 
-      
-      
+      <TouchableOpacity onPress={() => setToggle(!loginToggle)}>
+        <Text style={styles.link}>{loginToggle ? "Don't have an account? Signup" : "Already have an account? Login"}</Text>
+      </TouchableOpacity>
     </View>
-
-    </KeyboardAvoidingView>
-    
   );
 }
 
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#F4F6F8",
-    alignItems: "center",
-    paddingTop: 25,
-  },
-  imageHeader: {
-    width: '70%',
-    height: 290,
-    padding:5,
-    marginBottom:20,
-    marginTop:20,
-  },
-  headerText: {
-    fontSize: 25,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    color: "#383838"
-  },
-  inputField: {
-    borderWidth: 1,
-    borderColor: "#C4C4C4",
-    borderRadius: 5,
-    paddingLeft: 15,
-    marginBottom:5,
-    width: "130%",
-    backgroundColor: "#FFF",
-    alignSelf: "center",
-  },
-  loginButton: {
-    backgroundColor: "#7f82e1",
-    width: 300,
-    borderRadius: 5,
-  },
-  registerText: {
-    marginTop: 5,
-    color: '#7f82e1',
-    textDecorationLine: 'underline',
-  },
-});
+    container: {
+      flex: 1,
+      backgroundColor: '#f7f8fc',
+      alignItems: 'center',
+      justifyContent: 'center',
+      paddingHorizontal: 20,
+    },
+    image: {
+      width: 200,
+      height: 200,
+      resizeMode: 'contain',
+      marginBottom: 20,
+    },
+    title: {
+      fontSize: 28,
+      fontWeight: '600',
+      marginBottom: 20,
+      color: '#333',
+    },
+    inputContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      backgroundColor: 'white',
+      borderWidth: 1,
+      borderColor: '#ccc',
+      borderRadius: 6,
+      paddingHorizontal: 10,
+      marginBottom: 12,
+      width: '100%',
+    },
+    icon: {
+      marginRight: 8,
+    },
+    input: {
+      flex: 1,
+      height: 45,
+    },
+    button: {
+      backgroundColor: '#8888e0',
+      paddingVertical: 12,
+      borderRadius: 8,
+      width: '100%',
+      alignItems: 'center',
+      marginTop: 10,
+    },
+    buttonText: {
+      color: '#fff',
+      fontWeight: '500',
+      fontSize: 16,
+    },
+    link: {
+      color: '#6666cc',
+      marginTop: 14,
+      textDecorationLine: 'underline',
+    },
+    error: {
+      color: 'red',
+      marginBottom: 10,
+    },
+  });
+  

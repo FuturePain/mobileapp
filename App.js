@@ -4,9 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
 import HomeScreen from "./components/HomeScreen";
-import Content from "./components/Content";
 import Login from "./components/Login";
-import Quiz from "./components/Quiz";
 
 const Stack = createNativeStackNavigator();
 
@@ -18,21 +16,13 @@ export default function App() {
       <Stack.Navigator>
         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }}/>
         <Stack.Screen
-          name="FUTUREPAIN"
+          name="HomeScreen"
           component={HomeScreen}
           options={{
-            headerLargeTitle: true,
+            headerShown: false,
           }}
         />
-        <Stack.Screen name="Lesson" component={Content} />
-
-        <Stack.Screen
-          name="Quiz"
-          component={Quiz}
-          options={{
-            headerLargeTitle: true,
-          }}
-        />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );
